@@ -10,7 +10,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.Immutable
 import com.apero.composetraining.common.AppTheme
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 // ============================================================
 // DEMO 1: Counter KHÔNG có remember — BỊ LỖI!
@@ -189,4 +193,116 @@ fun DerivedStateDemo() {
 @Composable
 private fun DerivedStateDemoPreview() {
     AppTheme { DerivedStateDemo() }
+}
+
+// ============================================================
+// DEMO 6: snapshotFlow — chuyển Compose State thành Flow
+// Use case phổ biến: debounce search query
+// ============================================================
+
+@OptIn(kotlinx.coroutines.FlowPreview::class)
+@Composable
+fun SnapshotFlowDemo() {
+    var searchQuery by remember { mutableStateOf("") }
+    var debouncedQuery by remember { mutableStateOf("") }
+
+    // snapshotFlow đọc Compose State bên trong block, emit khi state thay đổi
+    // → Từ đó dùng được các Flow operators: debounce, distinctUntilChanged, mapLatest...
+    LaunchedEffect(Unit) {
+        snapshotFlow { searchQuery }          // emit mỗi khi searchQuery thay đổi
+            .debounce(500L)                   // đợi 500ms user ngừng gõ
+            .distinctUntilChanged()            // bỏ qua nếu value không thay đổi
+            .collect { query: String ->
+                debouncedQuery = query         // chỉ update sau khi debounce
+            }
+    }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("snapshotFlow + debounce Demo", fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            label = { Text("Gõ để search...") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("Giá trị NGAY LÚC GÕ: \"$searchQuery\"",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.error)
+        Text("Giá trị SAU DEBOUNCE (500ms): \"$debouncedQuery\"",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.primary)
+        Text(
+            "→ API call chỉ xảy ra với giá trị debounced",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SnapshotFlowDemoPreview() {
+    AppTheme { SnapshotFlowDemo() }
+}
+
+// ============================================================
+// DEMO 7: @Stable / @Immutable — tối ưu recomposition
+// ============================================================
+
+// ❌ KHÔNG có annotation: Compose coi List<> là unstable → không skip recompose
+data class UnstableUiState(
+    val title: String,
+    val items: List<String>  // List<T> mặc định UNSTABLE theo Compose compiler
+)
+
+// ✅ CÓ @Immutable: Compose biết class này không đổi sau creation → CÓ THỂ skip recompose
+@Immutable
+data class StableUiState(
+    val title: String,
+    val items: List<String>  // Cùng là List nhưng đã được "bảo lãnh" bởi @Immutable
+)
+
+@Composable
+fun StableAnnotationDemo() {
+    // Demo giải thích @Stable vs @Immutable
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text("@Stable / @Immutable Demo", fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                "❌ List<T> trong data class → Compose KHÔNG thể skip recompose\n" +
+                "   vì List không đảm bảo equals() đúng với mọi implementation",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                "✅ @Immutable trên data class → Compose TIN rằng\n" +
+                "   • Tất cả public properties đều val\n" +
+                "   • Giá trị không thay đổi sau construction\n" +
+                "   → CÓ THỂ skip recompose khi tham chiếu không đổi",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            HorizontalDivider()
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                "@Stable vs @Immutable:\n" +
+                "• @Immutable: properties KHÔNG ĐỔI sau creation (mạnh hơn)\n" +
+                "• @Stable: properties có thể đổi NHƯNG đúng equals() (linh hoạt hơn)",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StableAnnotationDemoPreview() {
+    AppTheme { StableAnnotationDemo() }
 }
