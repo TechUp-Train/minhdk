@@ -1,5 +1,6 @@
 package com.apero.composetraining
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,11 +13,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -46,6 +51,15 @@ private val sessions = listOf(
     SessionInfo(5, "Navigation & Side Effects", "NavHost, Arguments, Bottom nav, Deep links", "🧭"),
     SessionInfo(6, "Animation & Gesture", "animate*AsState, AnimatedVisibility, Gestures", "✨"),
     SessionInfo(7, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(8, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(9, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(10, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(16, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(15, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(14, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(13, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(12, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
+    SessionInfo(11, "Testing & Performance", "ComposeTestRule, @Stable, Performance audit", "🧪"),
 )
 
 private data class SessionInfo(
@@ -78,12 +92,21 @@ fun MainNavigation() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionListScreen(onSessionClick: (Int) -> Unit = {}) {
+    var enableDialog = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("🎓 Compose Training", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = androidx.compose.ui.graphics.Color.Transparent
+                )
+            )
+        },
+        bottomBar = {
+            TopAppBar(
+                title = { Text("🎓 Compose Training", fontWeight = FontWeight.Bold) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = androidx.compose.ui.graphics.Color.Transparent
                 )
             )
         }
@@ -96,7 +119,27 @@ fun SessionListScreen(onSessionClick: (Int) -> Unit = {}) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             itemsIndexed(sessions, key = { _, s -> s.number }) { _, session ->
-                SessionCard(session = session, onClick = { onSessionClick(session.number) })
+                SessionCard(session = session, onClick = {
+                    onSessionClick(session.number)
+                    enableDialog.value = true
+                })
+            }
+        }
+    }
+    if (enableDialog.value) {
+        Dialog(
+            onDismissRequest = { enableDialog.value = false},
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxHeight(0.6f)
+                    .padding(20.dp),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                itemsIndexed(sessions, key = { _, s -> s.number }) { _, session ->
+                    SessionCard(session = session, onClick = { onSessionClick(session.number) })
+                }
             }
         }
     }
@@ -231,7 +274,7 @@ fun SessionDetailScreen(sessionNumber: Int, onBack: () -> Unit = {}) {
                         Text("💡 Tip", fontWeight = FontWeight.Bold)
                         Text(
                             "Dùng Android Studio Preview để xem kết quả ngay. " +
-                                "Không cần build app mỗi lần thay đổi code!",
+                                    "Không cần build app mỗi lần thay đổi code!",
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

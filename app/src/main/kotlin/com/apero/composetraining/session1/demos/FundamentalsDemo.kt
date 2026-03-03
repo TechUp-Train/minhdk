@@ -24,6 +24,7 @@ import com.apero.composetraining.common.AppTheme
 // Giới thiệu 3 composable cơ bản nhất
 // ============================================================
 
+
 @Composable
 fun BasicComposablesDemo() {
     Column(
@@ -269,6 +270,41 @@ fun ProfileCardDemo() {
             Text("Follow")
         }
     }
+}
+
+@Composable
+fun JoeCard(
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = Color.Green),
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                imageVector = Icons.Default.Person,
+                contentDescription = "Avatar",
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+            )
+            Column {
+                Text(text = "Jane Doe")
+                Text(text = "Android Developer at Apero")
+            }
+        }
+    }
+
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    JoeCard()
 }
 
 @Preview(showBackground = true)
