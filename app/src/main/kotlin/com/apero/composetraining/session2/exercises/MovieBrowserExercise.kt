@@ -10,7 +10,7 @@ import com.apero.composetraining.common.AppTheme
 import com.apero.composetraining.common.SampleData
 
 /**
- * ⭐⭐ BÀI TẬP 2: Movie Browser (Medium)
+ * ⭐⭐ BONUS: Movie Browser (tham khảo NewsFeedExercise)
  *
  * Yêu cầu:
  * - LazyRow trên cùng: "Trending" horizontal scroll (poster 120x180dp)

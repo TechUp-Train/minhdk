@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.apero.composetraining.common.AppTheme
 
 /**
- * ⭐⭐⭐⭐ BÀI TẬP NÂNG CAO BUỔI 2: Streaming App Home (Netflix-style)
+ * ⭐⭐⭐⭐⭐ BONUS NÂNG CAO: Streaming App Home (Nested Scroll — Concept 5) (Netflix-style)
  *
  * Mô tả: Build Home screen với nested scrolling đúng cách
  *
