@@ -1,5 +1,6 @@
 package com.apero.composetraining.session2.exercises
 
+import android.util.Log
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -7,9 +8,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.apero.composetraining.common.AppTheme
+import kotlin.math.max
 
 /**
  * ⭐⭐⭐⭐ BÀI TẬP 4: Custom Tag Layout (Nâng cao — 45 phút)
@@ -71,6 +76,100 @@ import com.apero.composetraining.common.AppTheme
 //     }
 // }
 
+
+@Preview
+@Composable
+fun Test() {
+    MyTagLayout()
+}
+
+@Composable
+fun MyTagLayout(
+    spacing: Dp = 10.dp,
+    heightSpacing: Dp = 10.dp
+) {
+
+    val tags = listOf(
+        "Android", "Jetpack Compose", "Kotlin", "UI Design",
+        "Material3", "Jetpack", "Mobile Dev", "Coroutines",
+        "Flow", "MVVM", "Clean Architecture", "Hilt"
+    )
+
+    var spacingPx = 0f
+    var heightSpacingPx = 0f
+
+    with(LocalDensity.current) {
+        spacingPx = spacing.toPx()
+        heightSpacingPx = heightSpacing.toPx()
+    }
+
+    Layout(
+        content = {
+            tags.forEach { tag ->
+                SuggestionChip(onClick = {}, label = { Text(tag) })
+            }
+        }
+    ) { measurables, constraints ->
+
+        val placeables = measurables.map {
+            it.measure(constraints)
+        }
+
+        val parentWidth = constraints.maxWidth
+        // key: line, value: index of items that belong to this line
+        val lineItem = mutableMapOf<Int, MutableList<Int>>().apply {
+            this[0] = mutableListOf()
+        }
+
+        val lineHeight = mutableMapOf<Int, Int>()
+
+        var currentLine = 0
+        var widthUsed = 0
+        var maxHeightLine = 0
+
+        placeables.forEachIndexed { index, item ->
+            widthUsed += item.width
+            if (widthUsed <= parentWidth) {
+                lineItem[currentLine]?.add(index)
+            } else {
+                // calculate max height for this line
+                lineHeight[currentLine] = maxHeightLine
+                // reset for new line
+                widthUsed = item.width
+                maxHeightLine = 0
+                currentLine++
+                // add this for the next line
+                lineItem[currentLine] = mutableListOf<Int>().apply { add(index) }
+            }
+            widthUsed += spacingPx.toInt()
+            maxHeightLine = max(item.height, maxHeightLine)
+            if (index == placeables.size - 1 && lineItem.size > lineHeight.size) {
+                lineHeight[currentLine] = maxHeightLine
+            }
+        }
+        currentLine = 0
+        widthUsed = 0
+
+        val parentHeight = lineHeight.values.sum() + heightSpacingPx * (lineHeight.size - 1)
+
+        layout(parentWidth, parentHeight.toInt()) {
+
+            var coorX = 0
+            var coorY = 0
+
+            lineItem.forEach { (line, items) ->
+                items.forEach { pos ->
+                    placeables[pos].place(coorX, coorY)
+                    coorX += placeables[pos].width + spacingPx.toInt()
+                }
+                coorX = 0
+                coorY += (lineHeight[line] ?: 0) + heightSpacingPx.toInt()
+            }
+        }
+
+    }
+}
+
 @Composable
 fun TagLayoutScreen() {
     val tags = listOf(
@@ -96,9 +195,11 @@ fun TagLayoutScreen() {
         // TODO: Thay placeholder bằng TagsLayout(tags = tags)
         // Placeholder: hiển thị tags theo hàng ngang cố định
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Placeholder (chưa wrap đúng cách):",
+            Text(
+                "Placeholder (chưa wrap đúng cách):",
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.labelMedium)
+                style = MaterialTheme.typography.labelMedium
+            )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.horizontalScroll(rememberScrollState())

@@ -121,51 +121,89 @@ fun PricingTableScreen() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Chọn Gói Phù Hợp", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-        Text("Tất cả gói đều có 7 ngày dùng thử miễn phí",
+        Text(
+            "Chọn Gói Phù Hợp",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            "Tất cả gói đều có 7 ngày dùng thử miễn phí",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
 
         // TODO: Xóa placeholder và implement Row với IntrinsicSize.Max
         // Placeholder hiển thị 3 card KHÔNG bằng chiều cao (để thấy vấn đề cần fix)
-        Text("⚠️ Placeholder: 3 cards chưa bằng chiều cao",
+        Text(
+            "⚠️ Placeholder: 3 cards chưa bằng chiều cao",
             color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.labelMedium)
+            style = MaterialTheme.typography.labelMedium
+        )
 
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.height(IntrinsicSize.Max)
+        ) {
             plans.forEach { plan ->
                 Card(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
                     border = if (plan.isPopular)
-                        androidx.compose.foundation.BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+                        androidx.compose.foundation.BorderStroke(
+                            2.dp,
+                            MaterialTheme.colorScheme.primary
+                        )
                     else null
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) {
                         Text(plan.name, fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                        Text(plan.price, fontWeight = FontWeight.Bold, fontSize = 22.sp,
-                            color = MaterialTheme.colorScheme.primary)
-                        Text(plan.period, fontSize = 11.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(
+                            plan.price, fontWeight = FontWeight.Bold, fontSize = 22.sp,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            plan.period, fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                         plan.features.forEach { feature ->
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Check, contentDescription = null,
+                                Icon(
+                                    Icons.Default.Check, contentDescription = null,
                                     modifier = Modifier.size(14.dp),
-                                    tint = MaterialTheme.colorScheme.primary)
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
                                 Spacer(Modifier.width(4.dp))
                                 Text(feature, fontSize = 11.sp)
                             }
                         }
                         // TODO: Thêm Spacer(Modifier.weight(1f)) + Button ở đây
+
+                        Spacer(Modifier.weight(1f).height(10.dp))
+
+                        Button(
+                            onClick = {},
+                            modifier = Modifier
+                                .height(30.dp)
+                                .wrapContentWidth()
+                                .align(Alignment.CenterHorizontally)
+                        ) {
+                            Text(
+                                text = "Select"
+                            )
+                        }
                         // và bọc toàn bộ bằng Row(Modifier.height(IntrinsicSize.Max))
                     }
                 }
             }
         }
 
-        Text("💡 TODO: Dùng Row(Modifier.height(IntrinsicSize.Max)) để 3 card bằng chiều cao nhau",
+        Text(
+            "💡 TODO: Dùng Row(Modifier.height(IntrinsicSize.Max)) để 3 card bằng chiều cao nhau",
             color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.labelSmall)
+            style = MaterialTheme.typography.labelSmall
+        )
     }
 }
 
