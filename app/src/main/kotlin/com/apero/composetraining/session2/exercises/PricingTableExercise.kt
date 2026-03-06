@@ -180,9 +180,7 @@ fun PricingTableScreen() {
                         }
                         // TODO: Thêm Spacer(Modifier.weight(1f)) + Button ở đây
 
-                        Spacer(Modifier
-                            .weight(1f)
-                            .height(10.dp))
+                        Spacer(Modifier.weight(1f).height(10.dp))
 
                         Button(
                             onClick = {},

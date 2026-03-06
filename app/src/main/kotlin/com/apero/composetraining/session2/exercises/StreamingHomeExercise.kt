@@ -1,23 +1,50 @@
 package com.apero.composetraining.session2.exercises
 
+import android.R.color.black
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocalLibrary
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.apero.composetraining.R
 import com.apero.composetraining.common.AppTheme
+import okhttp3.internal.immutableListOf
+import kotlin.String
 
 /**
  * ⭐⭐⭐⭐⭐ BONUS NÂNG CAO: Streaming App Home (Nested Scroll — Concept 5) (Netflix-style)
@@ -85,7 +112,7 @@ private val featuredMovie = Movie(
     color = Color(0xFF0D1117)
 )
 
-private val movieSections = listOf(
+val movieSections = listOf(
     MovieSection(
         title = "🔥 Trending Now",
         movies = listOf(
@@ -117,6 +144,19 @@ private val movieSections = listOf(
 
 private val categories = listOf("All", "Movies", "Series", "Anime", "Documentary", "Kids")
 
+private data class NavBarItem(
+    val label: String,
+    val icon: ImageVector
+)
+
+private val navBarItems = listOf(
+    NavBarItem("Home", Icons.Default.Home),
+    NavBarItem("Search", Icons.Default.Search),
+    NavBarItem("Library", Icons.Default.LocalLibrary),
+    NavBarItem("Download", Icons.Default.Download),
+    NavBarItem("Profile", Icons.Default.AccountCircle)
+)
+
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 /**
@@ -143,96 +183,388 @@ private val categories = listOf("All", "Movies", "Series", "Anime", "Documentary
  *
  * Dùng Row(horizontalScroll) thay thế cho danh sách nhỏ (< 20 items)
  */
+
+val TextHeader34 = TextStyle(
+    fontSize = 34.sp,
+    fontWeight = FontWeight.Bold,
+    letterSpacing = 1.5.sp
+)
+
+val TextHeader20 = TextStyle(
+    fontSize = 20.sp,
+    fontWeight = FontWeight.Bold,
+    letterSpacing = 1.5.sp
+)
+
+val TextNormal16 = TextStyle(
+    fontSize = 16.sp,
+    fontWeight = FontWeight.Normal
+)
+
+val TextNormal14 = TextStyle(
+    fontSize = 16.sp,
+    fontWeight = FontWeight.Normal
+)
+
 @Composable
 fun StreamingHomeScreen(modifier: Modifier = Modifier) {
-    // TODO: Implement StreamingHomeScreen
-    // - rememberScrollState() cho outer scroll
-    // - var selectedCategory by remember { mutableStateOf("All") }
-    // - Column với fillMaxSize + verticalScroll(scrollState) + background(Color(0xFF0D0D0D))
-    //   → HeroBanner(featuredMovie)
-    //   → Spacer(16.dp)
-    //   → CategoryChipRow(categories, selectedCategory, onCategorySelect)
-    //   → Spacer(24.dp)
-    //   → movieSections.forEach { section → MovieSection(section) + Spacer(24.dp) }
-    //   → Spacer(80.dp) ← space cho FAB
-    Box {}
+
+    var selectedCat by remember { mutableStateOf(categories.first()) }
+
+    Scaffold(
+        bottomBar = {
+            BottomBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+            )
+        }
+    ) { contentPadding ->
+        LazyColumn(
+            contentPadding = contentPadding,
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = Color.Black)
+        ) {
+
+            item {
+                HeroBanner(
+                    movie = featuredMovie,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(280.dp)
+                )
+            }
+
+            item {
+                CategoryChipRow(
+                    categories = categories,
+                    selectedCategory = selectedCat
+                ) { selectedCat = it }
+            }
+
+            item {
+                movieSections.forEach {
+                    MovieSection(
+                        section = it,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp)
+                    )
+                }
+            }
+
+        }
+    }
 }
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-/**
- * Hero Banner — Box với gradient text overlay
- *
- * TODO: [Buổi 2 — Box] Cấu trúc:
- * Box(fillMaxWidth, height=280.dp) {
- *     Box(fillMaxSize, background = movie.color) {   ← Background poster
- *         Text emoji (80.sp, Alignment.Center)
- *     }
- *     Box(fillMaxSize, background = Brush.verticalGradient) ← Dark overlay
- *     Column(Alignment.BottomStart, padding=16.dp) { ← Content
- *         Text title + Text genre + Row buttons
- *     }
- * }
- */
+@Composable
+private fun BannerBackground(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(R.drawable.banner),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = modifier
+    )
+}
+
+@Preview
+@Composable
+private fun BannerAction(
+    modifier: Modifier = Modifier
+) {
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+
+        Button(
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors()
+                .copy(containerColor = Color.White),
+            onClick = {},
+            modifier = Modifier.wrapContentSize()
+        ) {
+            Text(
+                text = "Play",
+                color = Color.Black,
+                fontSize = 16.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Text(
+            text = "My List",
+            style = TextHeader20,
+            color = Color.White,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+    }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BannerInfo(
+    modifier: Modifier = Modifier,
+    name: String = "Doan Khac Minh",
+    category: String = "Sci-fi - Thriller",
+    time: String = "02:30:01",
+) {
+    Column(
+        modifier = modifier
+    ) {
+
+        Text(
+            text = name,
+            style = TextHeader34,
+            color = Color.White,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = category,
+                style = TextNormal16,
+                color = Color.White,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.width(20.dp))
+
+            Text(
+                text = "Duration: $time",
+                style = TextNormal16,
+                color = Color.White,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        BannerAction()
+    }
+}
+
 @Composable
 fun HeroBanner(
     movie: Movie,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Implement HeroBanner
-    // - Box với fillMaxWidth + height(280.dp)
-    // - Lớp 1: Box nền với movie.color + emoji ở giữa
-    // - Lớp 2: Box overlay với Brush.verticalGradient (Transparent → Black.alpha0.3 → Black.alpha0.9)
-    // - Lớp 3: Column (align = BottomStart, padding = 16.dp):
-    //   → Text movie.title (headlineMedium, Bold, White)
-    //   → Text "${genre} · ⭐ ${rating}" (bodyMedium, White.alpha0.8)
-    //   → Spacer(12.dp)
-    //   → Row buttons: Button "▶ Watch" (White bg) + OutlinedButton "+ My List"
-    Box {}
+    Box(
+        modifier = modifier
+    ) {
+        BannerBackground(modifier = Modifier.fillMaxSize())
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black
+                        )
+                    )
+                )
+        )
+
+        BannerInfo(
+            name = movie.title,
+            category = movie.genre,
+            time = "02:30:01",
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(12.dp)
+        )
+    }
 }
 
 @Composable
 fun CategoryChipRow(
     categories: List<String>,
     selectedCategory: String,
-    onCategorySelect: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onCategorySelect: (String) -> Unit
 ) {
-    // TODO: Implement CategoryChipRow
-    // - Row với horizontalScroll(rememberScrollState()) + padding(horizontal=16.dp)
-    // - horizontalArrangement = spacedBy(8.dp)
-    // - Với mỗi category: FilterChip(selected, onClick, label)
-    // GỢI Ý: Row(horizontalScroll) nhẹ hơn LazyRow cho list ngắn (<10 items)
-    Box {}
+
+    Row(
+        modifier = Modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+
+        categories.forEach { category ->
+
+            val isSelected = category == selectedCategory
+
+            FilterChip(
+                selected = isSelected,
+                onClick = { onCategorySelect(category) },
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(2.dp, Color.White),
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = Color.Transparent,
+                    selectedContainerColor = Color.White
+                ),
+                modifier = Modifier.padding(5.dp),
+                label = {
+                    Text(
+                        text = category,
+                        style = TextNormal14,
+                        color = if (!isSelected) Color.White else Color.Black
+                    )
+                }
+            )
+        }
+    }
 }
 
+@Preview
 @Composable
 fun MovieSection(
-    section: MovieSection,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    section: MovieSection = movieSections.first()
 ) {
-    // TODO: Implement MovieSection
-    // - Column:
-    //   → Text section.title (titleMedium, Bold, White, padding horizontal=16dp vertical=8dp)
-    //   → Row với horizontalScroll(rememberScrollState()) + padding(horizontal=16.dp) + spacedBy(12.dp)
-    //   → Mỗi movie: MovieCard(movie)
-    // GỢI Ý: Tại sao KHÔNG dùng LazyRow ở đây?
-    // → Nested Lazy với cùng hướng scroll → crash. Khác hướng thì OK.
-    Box {}
+    Column(modifier = modifier) {
+
+        Text(
+            text = section.title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            section.movies.forEach { movie ->
+                MovieCard(movie = movie)
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun MovieCard(
+    modifier: Modifier = Modifier,
+    movie: Movie = featuredMovie
+) {
+    Box(
+        modifier = modifier
+            .width(120.dp)
+            .height(160.dp)
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.banner),
+            contentDescription = movie.title,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.8f)
+                        )
+                    )
+                )
+        ) {
+
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
+
+                Text(
+                    text = movie.title,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Text(
+                    text = "⭐ ${movie.rating}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White.copy(alpha = 0.7f)
+                )
+            }
+        }
+    }
 }
 
 @Composable
-fun MovieCard(
-    movie: Movie,
-    modifier: Modifier = Modifier
-) {
-    // TODO: Implement MovieCard
-    // - Box với width(120.dp) + height(160.dp) + clip(RoundedCornerShape(8.dp)) + background(movie.color)
-    // - Text emoji (40.sp, align = Center)
-    // - Box overlay gradient ở BottomCenter (Transparent → Black.alpha0.8)
-    //   + Column bên trong: Text title (labelSmall, Bold, White) + Text "⭐ ${rating}" (labelSmall, White.alpha0.7)
-    Box {}
+fun BottomBar(modifier: Modifier = Modifier) {
+    NavigationBar(
+        containerColor = Color.Black.copy(alpha = 0.7f),
+        modifier = modifier
+    ) {
+        navBarItems.forEach {
+            BottomBarItem(
+                image = it.icon,
+                label = it.label,
+                isSelected = true
+            )
+        }
+    }
 }
+
+@Composable
+private fun RowScope.BottomBarItem(
+    image: ImageVector,
+    label: String,
+    isSelected: Boolean
+) {
+    NavigationBarItem(
+        selected = isSelected,
+        onClick = {},
+        icon = {
+            Icon(
+                imageVector = image,
+                contentDescription = null,
+                modifier = Modifier.size(25.dp)
+            )
+        },
+        label = { Text(label) },
+        colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = Color.White,
+            selectedTextColor = Color.White,
+            unselectedIconColor = Color.White.copy(alpha = 0.5f),
+            unselectedTextColor = Color.White.copy(alpha = 0.5f),
+            indicatorColor = Color.Transparent
+        )
+    )
+}
+
 
 // ─── Preview ─────────────────────────────────────────────────────────────────
 
