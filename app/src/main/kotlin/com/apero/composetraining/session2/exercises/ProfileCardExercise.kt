@@ -3,16 +3,20 @@ package com.apero.composetraining.session2.exercises
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apero.composetraining.common.AppTheme
+import okhttp3.internal.userAgent
 
 
 /**
@@ -73,54 +77,205 @@ data class UserProfile(
 @Composable
 fun ProfileCardScreen() {
     val profile = UserProfile(
-        name = "Nguyễn Quang Minh",
+        name = "Doan Khac Minh",
         jobTitle = "Android Developer tại Apero",
         postsCount = 128,
         followersCount = 1200,
         followingCount = 890
     )
 
-    Box(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(12.dp)
     ) {
-        // TODO: Thay placeholder bằng ProfileCard(profile, onFollowClick = {})
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Placeholder avatar
-                Box(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = profile.name.first().toString(),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(Modifier.height(12.dp))
-                Text(profile.name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                Text(profile.jobTitle, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(Modifier.height(16.dp))
-                Text("TODO: Implement stats row với IntrinsicSize.Min + VerticalDivider",
-                    color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-                Spacer(Modifier.height(16.dp))
-                Button(onClick = {}, modifier = Modifier.fillMaxWidth()) { Text("Follow") }
-            }
+
+        ProfileImage(
+            username = profile.name,
+            modifier = Modifier
+                .size(70.dp)
+                .background(color = Color.LightGray, shape = CircleShape)
+        )
+
+        Spacer(
+            modifier = Modifier.height(15.dp)
+        )
+
+        Text(
+            text = profile.name,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = Color.Black
+        )
+
+        Spacer(
+            modifier = Modifier.height(5.dp)
+        )
+
+        Text(
+            text = profile.jobTitle,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = Color.Black
+        )
+
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
+
+        HorizontalDivider(
+            thickness = 2.dp,
+            color = Color.LightGray,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Max)
+        ) {
+
+            ProfileStat(
+                amount = profile.postsCount.toString(),
+                title = "Posts",
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+
+            Box(
+                modifier = Modifier
+                    .width(2.dp)
+                    .fillMaxHeight()
+                    .background(Color.LightGray)
+                    .padding(vertical = 10.dp)
+            )
+
+            ProfileStat(
+                amount = profile.followersCount.toString(),
+                title = "Followers",
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+
+            Box(
+                modifier = Modifier
+                    .width(2.dp)
+                    .fillMaxHeight()
+                    .padding(5.dp)
+            )
+
+            ProfileStat(
+                amount = profile.followingCount.toString(),
+                title = "Following",
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+
         }
+
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+
+        HorizontalDivider(
+            thickness = 2.dp,
+            color = Color.LightGray,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(
+            modifier = Modifier.height(30.dp)
+        )
+
+        Button(
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors().copy(containerColor = Color.Blue.copy(alpha = 0.3f)),
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Follow"
+            )
+        }
+
     }
+
+
 }
 
-@Preview(showBackground = true)
+
+    @Preview
+@Composable
+private fun ProfileImage(
+    modifier: Modifier = Modifier,
+    username: String = "Doan Khac Minh"
+) {
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+    ) {
+        Text(
+            text = username.first().toString(),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+    }
+
+}
+
+@Preview
+@Composable
+fun ProfileStat(
+    modifier: Modifier = Modifier,
+    amount: String = "123",
+    title: String = "Posts"
+) {
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+    ) {
+
+        Text(
+            text = amount,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = Color.Black
+        )
+
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = Color.Black
+        )
+
+    }
+
+}
+
+@Preview(showBackground = false)
 @Composable
 private fun ProfileCardScreenPreview() {
     AppTheme { ProfileCardScreen() }
