@@ -58,10 +58,10 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data object Welcome
+private data object Welcome
 
 @Serializable
-data object Home
+private data object Home
 
 
 @Preview
