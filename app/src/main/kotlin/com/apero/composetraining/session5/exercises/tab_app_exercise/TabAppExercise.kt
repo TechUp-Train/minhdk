@@ -1,4 +1,4 @@
-package com.apero.composetraining.session5.exercises.TabAppExercise
+package com.apero.composetraining.session5.exercises.tab_app_exercise
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.apero.composetraining.common.AppTheme
+import com.apero.composetraining.session5.exercises.tab_app_exercise.home.ArticleDetailScreen
+import com.apero.composetraining.session5.exercises.tab_app_exercise.home.HomeScreen
 import kotlinx.serialization.Serializable
 
 /**
@@ -122,18 +124,6 @@ private val navbarItems = listOf(
 )
 
 @Composable
-private fun HomeScreen() {
-    
-}
-
-@Composable
-private fun ArticleDetailScreen(
-    articleId: Int
-) {
-
-}
-
-@Composable
 private fun ExploreScreen() {
 
 }
@@ -211,6 +201,7 @@ private fun BottomBar(
 
 @Composable
 private fun SetupNavBar(
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     curBackStack: SnapshotStateList<Any>,
     onPressBack: () -> Unit
 ) {
@@ -224,13 +215,17 @@ private fun SetupNavBar(
         entryProvider = entryProvider {
 
             entry<Homee> {
-                HomeScreen()
+                HomeScreen(contentPadding) {
+                    curBackStack.add(ArticleDetail(it))
+                }
             }
 
             entry<ArticleDetail> {
                 curBackStack.lastOrNull()?.let { curEntry ->
                     (curEntry as? ArticleDetail)?.let {
-                        ArticleDetailScreen(it.id)
+                        ArticleDetailScreen(contentPadding, it.id) {
+                            curBackStack.removeLastOrNull()
+                        }
                     }
                 }
             }
@@ -280,7 +275,7 @@ fun TabAppScreen() {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
+                    .height(80.dp)
                     .background(containerColor.copy(alpha = 0.5f))
             ) { pos ->
                 curBackStack = when (pos) {
@@ -293,31 +288,24 @@ fun TabAppScreen() {
         }
     ) { contentPadding ->
 
-        LazyColumn(
-            contentPadding = contentPadding,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            item {
-                SetupNavBar(curBackStack) pressBack@{
-                    // navigate up in normal case
-                    if (curBackStack.size > 1) {
-                        curBackStack.removeLastOrNull()
-                        return@pressBack
-                    }
-                    // back to home flow if down to first screen of the current
-                    // stack which is not homeEntries
-                    if (curBackStack != homeEntries) {
-                        curBackStack = homeEntries
-                        return@pressBack
-                    }
-                    // take user to home if th cur stack is home
-                    context.startActivity(Intent(Intent.ACTION_MAIN).apply {
-                        addCategory(Intent.CATEGORY_HOME)
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    })
-
-                }
+        SetupNavBar(contentPadding = contentPadding, curBackStack = curBackStack) pressBack@{
+            // navigate up in normal case
+            if (curBackStack.size > 1) {
+                curBackStack.removeLastOrNull()
+                return@pressBack
             }
+            // back to home flow if down to first screen of the current
+            // stack which is not homeEntries
+            if (curBackStack != homeEntries) {
+                curBackStack = homeEntries
+                return@pressBack
+            }
+            // take user to home if th cur stack is home
+            context.startActivity(Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
+
         }
 
 

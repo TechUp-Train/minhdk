@@ -1,4 +1,4 @@
-package com.apero.composetraining.session5.exercises.TabAppExercise.data
+package com.apero.composetraining.session5.exercises.tab_app_exercise.data
 
 
 data class Author(
@@ -7,6 +7,7 @@ data class Author(
 )
 
 data class FeaturedStory(
+    val id: Int,
     val title: String,
     val description: String,
     val readTime: String,     // "8 min read"
