@@ -86,7 +86,8 @@ fun RowScope.ArticleCardTitle(
             text = description,
             fontSize = 16.sp,
             maxLines = 2,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            color = Color.Black.copy(alpha = 0.5f)
         )
 
         Spacer(modifier = Modifier.height(20.dp))

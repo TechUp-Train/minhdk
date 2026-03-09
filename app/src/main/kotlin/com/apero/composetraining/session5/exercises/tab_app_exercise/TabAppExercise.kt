@@ -2,10 +2,10 @@ package com.apero.composetraining.session5.exercises.tab_app_exercise
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -312,8 +312,11 @@ fun TabAppScreen() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Light Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
 @Composable
 private fun TabAppScreenPreview() {
-    AppTheme { TabAppScreen() }
+    AppTheme(darkTheme = false) { TabAppScreen() }
 }
