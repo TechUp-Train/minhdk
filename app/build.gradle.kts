@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.apero.composetraining"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.apero.composetraining"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -65,6 +65,18 @@ dependencies {
     // TODO: Cần AGP 8.9.1+ và compileSdk 36 để dùng navigation3-ui:1.0.0+
     // Uncomment khi update build config:
     // implementation("androidx.navigation3:navigation3-ui:1.0.0")
+
+    // Navigation 3
+    implementation("androidx.navigation3:navigation3-runtime:1.0.1")
+    implementation("androidx.navigation3:navigation3-ui:1.0.1")
+    // ViewModel integration
+    implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:2.11.0-alpha01")
+    // Kotlin serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
+    // Adaptive navigation (tablet / foldable)
+    implementation("androidx.compose.material3.adaptive:adaptive-navigation3:1.3.0-alpha09")
+
+
 
     // Serialization (for type-safe navigation)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
