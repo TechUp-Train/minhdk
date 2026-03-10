@@ -16,6 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apero.composetraining.common.AppTheme
+import com.apero.composetraining.session1.exercises.OceanBlue
+import com.apero.composetraining.session1.exercises.SoftOceanBlue
 import okhttp3.internal.userAgent
 
 
@@ -109,7 +111,7 @@ fun ProfileCardScreen() {
             fontWeight = FontWeight.Bold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = Color.Black
+            color = OceanBlue
         )
 
         Spacer(
@@ -203,7 +205,7 @@ fun ProfileCardScreen() {
 
         Button(
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors().copy(containerColor = Color.Blue.copy(alpha = 0.3f)),
+            colors = ButtonDefaults.buttonColors().copy(containerColor = OceanBlue),
             onClick = {},
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -213,12 +215,10 @@ fun ProfileCardScreen() {
         }
 
     }
-
-
 }
 
 
-    @Preview
+@Preview
 @Composable
 private fun ProfileImage(
     modifier: Modifier = Modifier,

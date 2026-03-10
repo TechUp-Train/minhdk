@@ -1,5 +1,6 @@
 package com.apero.composetraining.session2.exercises
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.apero.composetraining.R
 import com.apero.composetraining.common.AppTheme
 import com.apero.composetraining.common.SampleData
+import com.apero.composetraining.session1.exercises.OceanBlue
 import kotlin.math.cos
 
 /**
@@ -64,6 +67,34 @@ private val movies = listOf(
     MyMovie(10, "Movie 10", 2022, 8.6)
 )
 
+@Composable
+fun GroupTitle(
+    modifier: Modifier = Modifier,
+    title: String,
+    icon: ImageVector
+) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = modifier
+    ) {
+
+        Image(
+            imageVector = icon,
+            contentDescription = null
+        )
+
+        Text(
+            text = title,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(start = 12.dp)
+        )
+
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieBrowserScreen() {
@@ -73,7 +104,7 @@ fun MovieBrowserScreen() {
             Topbar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.LightGray)
+                    .background(OceanBlue)
             )
         }
     ) { padding ->
@@ -85,65 +116,28 @@ fun MovieBrowserScreen() {
         ) {
 
             item {
-                Spacer(
-                    modifier = Modifier.height(12.dp)
-                )
+                Spacer(modifier = Modifier.height(12.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-
-                    Image(
-                        imageVector = Icons.Default.LocalFireDepartment,
-                        contentDescription = null
-                    )
-
-                    Text(
-                        text = "Trendings",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(start = 12.dp)
-                    )
-
-                }
-
-                Spacer(
-                    modifier = Modifier.height(10.dp)
-                )
-
-                MovieGroup(
+                GroupTitle(
+                    title = "Trending",
+                    icon = Icons.Default.LocalFireDepartment,
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
+                Spacer(modifier = Modifier.height(10.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.Start,
+                MovieGroup(modifier = Modifier.fillMaxWidth())
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                GroupTitle(
+                    title = "All Movies",
+                    icon = Icons.Default.LocalFireDepartment,
                     modifier = Modifier.fillMaxWidth()
-                ) {
-
-                    Image(
-                        imageVector = Icons.Default.LocalFireDepartment,
-                        contentDescription = null
-                    )
-
-                    Text(
-                        text = "All Movies",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(start = 12.dp)
-                    )
-
-                }
+                )
             }
 
+            var count = 0
             items(items = movies, key = { movie -> movie.id }) { item ->
                 VerticalMovieItem(
                     movie = item,
@@ -151,8 +145,14 @@ fun MovieBrowserScreen() {
                         .fillMaxWidth()
                         .padding(12.dp)
                 )
+                if(++count < movies.size - 1) {
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = OceanBlue,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
             }
-
         }
     }
 }
@@ -168,12 +168,10 @@ private fun Topbar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.weight(1f)
         ) {
-
             Image(
                 imageVector = Icons.Default.Movie,
                 contentDescription = null
@@ -185,27 +183,25 @@ private fun Topbar(
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(start = 12.dp)
+                modifier = Modifier.padding(start = 12.dp),
+                color = Color.White
             )
-
         }
 
         IconButton(
             onClick = onClickMore,
             modifier = Modifier.padding(5.dp)
         ) {
-
             Icon(
                 imageVector = Icons.Default.MoreVert,
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.White
             )
-
         }
-
     }
-
 }
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Preview
 @Composable
 private fun MovieGroup(
@@ -267,8 +263,9 @@ fun MovieItem(
     ) {
 
         Image(
-            painter = ColorPainter(color = Color.Cyan.copy(alpha = 0.3f)),
+            painter = painterResource(R.drawable.anhnen),
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -297,15 +294,6 @@ fun VerticalMovieItem(
         modifier = modifier
     ) {
 
-        HorizontalDivider(
-            thickness = 2.dp,
-            color = Color.LightGray,
-        )
-
-        Spacer(
-            modifier = Modifier.height(5.dp)
-        )
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -313,12 +301,13 @@ fun VerticalMovieItem(
         ) {
 
             Image(
-                painter = ColorPainter(Color.Cyan.copy(alpha = 0.5f)),
+                painter = painterResource(R.drawable.banner),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(100.dp)
                     .height(130.dp)
+                    .clip(RoundedCornerShape(12.dp))
             )
 
             Column(
@@ -329,10 +318,11 @@ fun VerticalMovieItem(
 
                 Text(
                     text = movie.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = OceanBlue
                 )
 
                 Spacer(modifier = Modifier.height(5.dp))
@@ -356,12 +346,8 @@ fun VerticalMovieItem(
                 )
 
                 Spacer(modifier = Modifier.height(5.dp))
-
-
             }
-
         }
-
     }
 }
 

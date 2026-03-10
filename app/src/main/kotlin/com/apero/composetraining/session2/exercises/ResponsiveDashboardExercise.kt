@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apero.composetraining.common.AppTheme
+import com.apero.composetraining.session1.exercises.AzureBlue
 
 /**
  * ⭐⭐⭐ BÀI TẬP 3: Responsive Dashboard (Khó — 60 phút)
@@ -479,7 +480,7 @@ private fun DashboardCard(
     Card(
         elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.LightGray
+            containerColor = AzureBlue
         ),
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
