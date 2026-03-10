@@ -1,11 +1,17 @@
 package com.apero.composetraining.session1.exercises
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Repeat
@@ -17,13 +23,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apero.composetraining.common.AppTheme
+import kotlin.math.abs
 
 /**
  * ⭐⭐⭐ BÀI TẬP NÂNG CAO: Social Post Card
@@ -45,27 +55,78 @@ import com.apero.composetraining.common.AppTheme
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 
+// defind colors:
+private val avatarColors = listOf(
+    Color.Red,
+    Color.Green,
+    Color.Blue,
+    Color.Yellow,
+    Color.Magenta,
+    Color.Cyan,
+    Color.Gray,
+    Color.LightGray,
+    Color.Transparent
+)
+
+private val postContent = "\uD83C\uDFD7 MVVM\n" +
+        "\n" +
+        "\uD83D\uDD04 Unidirectional Data Flow\n" +
+        "\n" +
+        "\uD83D\uDCE6 Modularization\n" +
+        "\n" +
+        "\uD83E\uDDEA Unit Test\n" +
+        "\n" +
+        "Kiến trúc tốt giúp team scale dễ dàng và bảo trì lâu dài."
+
 @Composable
 fun SocialPostCard(
+    modifier: Modifier = Modifier,
     username: String,
     timeAgo: String,
     content: String,
     likeCount: Int = 0,
     commentCount: Int = 0,
     retweetCount: Int = 0,
-    modifier: Modifier = Modifier,
-    // Nullable slot cho attachment — chỉ render nếu != null
     attachment: (@Composable () -> Unit)? = null
 ) {
-    // TODO: Implement SocialPostCard layout
-    // - Card với RoundedCornerShape(12.dp) và elevation
-    // - Column bên trong với padding(12.dp)
-    // - Gọi PostHeader(username, timeAgo)
-    // - Spacer rồi Text content với maxLines=3, overflow=Ellipsis
-    // - Kiểm tra attachment != null → Spacer + gọi attachment()
-    // - Spacer + HorizontalDivider
-    // - Gọi PostActionBar(likeCount, commentCount, retweetCount)
-    Box {}
+
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp),
+        modifier = modifier
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(12.dp)
+        ) {
+            PostHeader(username, timeAgo)
+
+            Spacer(modifier = Modifier.fillMaxWidth().height(12.dp))
+
+            PostContent(
+                content = content,
+                limitLines = 3
+            )
+
+            Spacer(modifier = Modifier.fillMaxWidth().height(12.dp))
+
+            attachment?.invoke()
+
+            Spacer(modifier = Modifier.fillMaxWidth().height(12.dp))
+
+            PostActionBar(
+                likeCount = likeCount,
+                commentCount = commentCount,
+                retweetCount = retweetCount,
+                onClickLike = {},
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+            )
+        }
+
+    }
 }
 
 // ─── Sub-components (cần tự implement) ───────────────────────────────────────
@@ -76,12 +137,39 @@ fun PostHeader(
     timeAgo: String,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Implement PostHeader
-    // - Row với fillMaxWidth, verticalAlignment = CenterVertically
-    // - Gọi UserAvatar(username)
-    // - Spacer(width = 10.dp)
-    // - Column (weight(1f)): Text username (Bold) + Text timeAgo (secondary color)
-    Box {}
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        UserAvatar(
+            username, Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+        )
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 12.dp)
+        ) {
+            Text(
+                text = username,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Text(
+                text = timeAgo,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
 }
 
 @Composable
@@ -89,12 +177,12 @@ fun UserAvatar(
     username: String,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Implement UserAvatar
-    // - Tính màu từ username.hashCode() (dùng avatarColors list + abs() % size)
-    // - Box size(40.dp) + clip(CircleShape) + background(color)
-    // - Text hiển thị chữ cái đầu của username (uppercaseChar)
-    // GỢI Ý: val color = avatarColors[Math.abs(username.hashCode()) % avatarColors.size]
-    Box {}
+    val imageColor = avatarColors[abs(username.hashCode()) % avatarColors.size]
+    Image(
+        painter = ColorPainter(imageColor),
+        contentDescription = null,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -102,132 +190,138 @@ fun PostActionBar(
     likeCount: Int,
     commentCount: Int,
     retweetCount: Int,
+    onClickLike: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Implement PostActionBar
-    // - Row với fillMaxWidth, Arrangement.SpaceBetween
-    // - 4 ActionItem: Like (FavoriteBorder), Comment (ChatBubbleOutline), Retweet (Repeat), Share (Share)
-    // - Share không hiện count (truyền count = null)
-    Box {}
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        ActionItem(
+            icon = Icons.Default.FavoriteBorder,
+            count = likeCount,
+            onClick = onClickLike
+        )
+
+        ActionItem(
+            icon = Icons.Default.Edit,
+            count = commentCount
+        ) {}
+
+        ActionItem(
+            icon = Icons.Default.Refresh,
+            count = retweetCount
+        ) {}
+
+        ActionItem(
+            icon = Icons.Default.Share,
+            count = null
+        ) {}
+    }
 }
 
 @Composable
 fun ActionItem(
+    modifier: Modifier = Modifier,
     icon: ImageVector,
     count: Int?,
-    contentDescription: String,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit
 ) {
-    // TODO: Implement ActionItem (reusable)
-    // - Row với verticalAlignment = CenterVertically, spacedBy(4.dp)
-    // - Icon size(18.dp) với tint = onSurfaceVariant
-    // - Nếu count != null && count > 0: hiển thị Text count
-    Box {}
-}
-
-// ─── Preview ─────────────────────────────────────────────────────────────────
-
-// Preview 1: Không có attachment
-@Preview(showBackground = true, name = "Post — No Attachment")
-@Composable
-private fun SocialPostNoAttachmentPreview() {
-    AppTheme {
-        SocialPostCard(
-            username = "nqmgaming",
-            timeAgo = "2 min ago",
-            content = "Vừa migrate ANeko sang Jetpack Compose xong! " +
-                    "Smart recomposition giúp animation smooth hơn hẳn so với View system. " +
-                    "Ai đang dùng Compose production chưa?",
-            likeCount = 42,
-            commentCount = 12,
-            retweetCount = 7
-        )
-    }
-}
-
-// Preview 2: Có Image attachment (dùng Box placeholder)
-@Preview(showBackground = true, name = "Post — With Image Attachment")
-@Composable
-private fun SocialPostWithImagePreview() {
-    AppTheme {
-        SocialPostCard(
-            username = "thang44hdai",
-            timeAgo = "15 min ago",
-            content = "DSA practice session hôm nay — solved Binary Search Tree in O(log n). " +
-                    "Cái này sẽ apply được vào Room database query optimization không nhỉ?",
-            likeCount = 15,
-            commentCount = 3,
-            retweetCount = 2,
-            attachment = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "📸 Image Attachment",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier
+            .clickable {
+                onClick()
             }
+            .padding(5.dp)
+    ) {
+        Image(
+            imageVector = icon,
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.size(25.dp)
         )
+
+        count?.let {
+            Text(
+                text = it.toString(),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                color = Color.Black,
+                textAlign = TextAlign.Start,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .padding(horizontal = 6.dp)
+                    .align(Alignment.CenterVertically)
+            )
+        }
     }
 }
 
-// Preview 3: Có Code block attachment
-@Preview(showBackground = true, name = "Post — With Code Block")
 @Composable
-private fun SocialPostWithCodePreview() {
-    AppTheme {
-        SocialPostCard(
-            username = "KhacMinh2305",
-            timeAgo = "1 hour ago",
-            content = "Mới học được cái Slot API trong Compose — flexible hơn XML include rất nhiều!",
-            likeCount = 8,
-            commentCount = 5,
-            retweetCount = 1,
-            attachment = {
-                // Code block attachment — mono font, nền tối
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp)),
-                    color = Color(0xFF1E1E1E)
-                ) {
-                    Text(
-                        text = """
-@Composable
-fun AppCard(
-    title: String,
-    content: @Composable () -> Unit
+fun PostContent(
+    content: String,
+    limitLines: Int? = null
 ) {
-    Card { 
-        content() // Slot!
-    }
-}""".trimIndent(),
-                        modifier = Modifier.padding(12.dp),
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                        fontSize = 12.sp,
-                        color = Color(0xFFD4D4D4)
-                    )
-                }
-            }
-        )
+    Text(
+        text = content,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Normal,
+        maxLines = limitLines ?: Int.MAX_VALUE,
+        color = Color.Black
+    )
+}
+
+//--------------------------------------Previews--------------------------------------
+@Preview(showBackground = true)
+@Composable
+private fun PostHeaderPreview() {
+    PostHeader("Min", "23:01 23/01/2003")
+}
+
+@Preview
+@Composable
+private fun PostContentPreview() {
+    PostContent(postContent)
+}
+
+@Preview
+@Composable
+fun PostActionBarItemPreview() {
+    ActionItem(
+        icon = Icons.Default.FavoriteBorder,
+        count = 100
+    ) {
+
     }
 }
 
-// Preview 4: Dark Mode
-@Preview(
-    showBackground = true,
-    name = "Post — Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@Preview
 @Composable
-private fun SocialPostDarkPreview() {
-    AppTheme {
-        SocialPostNoAttachmentPreview()
-    }
+fun PostActionBarPreview() {
+    PostActionBar(
+        likeCount = 100,
+        commentCount = 200,
+        retweetCount = 300,
+        onClickLike = {}
+    )
+}
+
+@Preview
+@Composable
+fun SocialCardPreview() {
+    SocialPostCard(
+        username = "Doan Khac Minh",
+        timeAgo = "23 days ago",
+        content = postContent,
+        likeCount = 2003,
+        commentCount = 23,
+        retweetCount = 1,
+        attachment = null,
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    )
 }

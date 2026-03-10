@@ -1,12 +1,28 @@
 package com.apero.composetraining.session1.exercises
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.apero.composetraining.R
 import com.apero.composetraining.common.AppTheme
 
 /**
@@ -21,11 +37,15 @@ import com.apero.composetraining.common.AppTheme
  * - @Preview với showBackground = true
  */
 
+
 @Composable
 fun ContactCard(
-    name: String = "Nguyễn Văn An",
+    name: String = "Doan Khac Minh",
     bio: String = "Android Developer tại Apero"
 ) {
+
+    var isFollowed by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,16 +55,68 @@ fun ContactCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row {
-                // TODO: [Session 1] Bài tập 2 - Thêm avatar (Icon hoặc Image)
-                // Gợi ý: Icon với modifier .size(60.dp).clip(CircleShape).background(...)
+                Image(
+                    painter = painterResource(R.drawable.anhnen),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                        .align(Alignment.CenterVertically)
+                )
 
-                // TODO: [Session 1] Bài tập 2 - Thêm Column chứa Name (Bold) và Bio (Regular)
-                // Gợi ý: Column(modifier = Modifier.weight(1f).padding(start = 12.dp))
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentHeight()
+                        .padding(start = 12.dp)
+                ) {
+
+                    Text(
+                        text = name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                    )
+
+                    Text(
+                        text = bio,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        textAlign = TextAlign.Start,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                    )
+
+                }
+
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // TODO: [Session 1] Bài tập 2 - Thêm Button "Follow" với fillMaxWidth
+            Button(
+                colors = ButtonDefaults.buttonColors()
+                    .copy(containerColor = if (isFollowed) Color.LightGray else OceanBlue),
+                onClick = {
+                    if (!isFollowed) isFollowed = true
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Follow",
+                    color = if (!isFollowed) Color.White else Color.Black
+                        .copy(alpha = 0.5f)
+                )
+            }
         }
     }
 }

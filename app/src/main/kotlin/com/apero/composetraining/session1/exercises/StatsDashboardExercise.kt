@@ -1,21 +1,23 @@
 package com.apero.composetraining.session1.exercises
 
-import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.TrendingDown
-import androidx.compose.material.icons.automirrored.filled.TrendingUp
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.apero.composetraining.common.AppTheme
 
 /**
  * ⭐⭐⭐⭐ BÀI TẬP NÂNG CAO: Stats Dashboard
@@ -46,96 +48,213 @@ data class StatData(
 )
 
 // ─── Components ──────────────────────────────────────────────────────────────
-
-/**
- * Card hiển thị 1 stat với Slot API cho trend
- *
- * TODO: [Nâng cao] Tại sao Slot API tốt hơn truyền thẳng TrendIndicator vào?
- * → Caller có thể truyền bất kỳ UI nào vào (TrendIndicator, Chart, Badge...)
- */
 @Composable
 fun StatCard(
     label: String,
     value: String,
     emoji: String,
     modifier: Modifier = Modifier,
-    // Slot API cho trend indicator — caller quyết định UI
-    trend: @Composable () -> Unit = {}
+    trend: @Composable ColumnScope.() -> Unit = {}
 ) {
-    // TODO: Implement StatCard layout
-    // - Card với RoundedCornerShape(12.dp) và elevation
-    // - Column bên trong với fillMaxHeight() + padding(16.dp)
-    // - verticalArrangement = SpaceBetween
-    // - Row header: emoji text + label text (onSurfaceVariant)
-    // - Text value lớn (headlineMedium, Bold)
-    // - Gọi trend() slot ở dưới
-    // GỢI Ý: fillMaxHeight() phối hợp với IntrinsicSize.Max ở Row cha
-    Box {}
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp),
+        modifier = modifier
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Max)
+                .padding(16.dp)
+        ) {
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = emoji,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    modifier = Modifier.wrapContentSize()
+                )
+
+                Text(
+                    text = label,
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Normal,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(start = 10.dp)
+                )
+            }
+
+            Text(
+                text = value,
+                fontSize = 30.sp,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+            )
+
+            trend()
+
+        }
+    }
 }
 
-/**
- * Trend indicator: icon mũi tên + percentage + màu
- *
- * TODO: [Nâng cao - Compose Phase] So sánh 2 cách rotate icon:
- *
- * // ❌ Cách 1: Modifier.rotate() — trigger cả 3 phases (Composition + Layout + Drawing)
- * Icon(modifier = Modifier.rotate(if (isPositive) 0f else 180f))
- *
- * // ✅ Cách 2: graphicsLayer — skip Composition + Layout, chỉ Drawing
- * Icon(modifier = Modifier.graphicsLayer { rotationZ = if (isPositive) 0f else 180f })
- *
- * Với static UI cả 2 cho kết quả giống nhau, nhưng trong animation thì graphicsLayer
- * hiệu quả hơn nhiều vì không trigger layout pass.
- */
 @Composable
 fun TrendIndicator(
     percentage: String,
     isPositive: Boolean,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Implement TrendIndicator
-    // - Xác định color: tertiary nếu isPositive, error nếu ngược lại
-    // - Row với verticalAlignment = CenterVertically, spacedBy(4.dp)
-    // - Icon TrendingUp/TrendingDown size(16.dp) với tint = color
-    // - GỢI Ý: Thay vì Modifier.rotate(), dùng Modifier.graphicsLayer { rotationZ = ... }
-    //   → graphicsLayer chỉ trigger Drawing phase, tiết kiệm hơn cho animation
-    // - Text percentage với color và fontWeight Medium
-    Box {}
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+
+        val positiveColor = if (isPositive) Color.Green else Color.Red
+
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowUp,
+            contentDescription = null,
+            tint = positiveColor,
+            modifier = Modifier
+                .size(25.dp)
+                .graphicsLayer { rotationZ = if (isPositive) 0f else 180f }
+        )
+
+        Text(
+            text = percentage,
+            fontSize = 16.sp,
+            color = Color.Black,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .wrapContentSize()
+        )
+    }
 }
 
-/**
- * Dashboard chứa 4 StatCards trong 2x2 grid
- *
- * TODO: [Nâng cao] Key implementation — IntrinsicSize.Max cho equal height
- *
- * Vấn đề: 2 card trong Row có content khác nhau → height khác nhau → layout không đều
- *
- * Solution:
- * Row(modifier = Modifier.height(IntrinsicSize.Max)) {
- *     StatCard(modifier = Modifier.weight(1f).fillMaxHeight())
- *     StatCard(modifier = Modifier.weight(1f).fillMaxHeight())
- * }
- *
- * Cơ chế: IntrinsicSize.Max đo height của card cao nhất, rồi set cho tất cả
- */
+@Composable
+private fun DashboardHeader(modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+
+        Text(
+            text = "\uD83D\uDCCA Dashboard",
+            fontSize = 25.sp,
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+
+    }
+
+    Text(
+        text = "Today",
+        fontSize = 20.sp,
+        color = Color.Black,
+        fontWeight = FontWeight.Normal,
+        maxLines = 1,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+    )
+}
+
 @Composable
 fun StatsDashboard(
-    stats: List<StatData>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    stats: List<StatData>
 ) {
-    // TODO: Implement StatsDashboard 2x2 grid
-    // - Card ngoài với fillMaxWidth + padding(16.dp), elevation
-    // - Column bên trong với padding(16.dp)
-    // - Header Row: "📊 Dashboard" text (titleLarge, Bold) + "Today" text (bodySmall)
-    // - Spacer(16.dp)
-    // - Row 1 (stats[0] và stats[1]):
-    //   → PHẢI dùng Modifier.height(IntrinsicSize.Max) trên Row
-    //   → Mỗi StatCard: Modifier.weight(1f).fillMaxHeight()
-    //   → Truyền TrendIndicator vào slot trend
-    // - Spacer(12.dp) rồi Row 2 tương tự với stats[2] và stats[3]
-    // GỢI Ý: Tại sao cần IntrinsicSize.Max?
-    // → Compose đo "intrinsic height" của mỗi child, lấy max, constraint tất cả về height đó
-    Box {}
+    var rowCount = stats.size / 2
+    if (rowCount % 2 != 0) rowCount++
+
+    Card(
+        colors = CardDefaults.cardColors().copy(containerColor = AzureBlue.copy(alpha = 0.2f)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(16.dp)
+        ) {
+
+            DashboardHeader(modifier = Modifier.fillMaxWidth().wrapContentSize())
+
+            for (i in 0..<rowCount) {
+
+                val rowData = getStatRow(i, stats)
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Max)
+                ) {
+
+                    rowData.forEach { stat ->
+                        stat?.let { absStat ->
+                            StatCard(
+                                label = absStat.label,
+                                value = absStat.value,
+                                emoji = absStat.emoji,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .wrapContentHeight()
+                            ) {
+                                TrendIndicator(
+                                    percentage = absStat.percentage,
+                                    isPositive = absStat.isPositive,
+                                    modifier = Modifier
+                                        .padding(top = 10.dp)
+                                )
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    }
+}
+
+private fun getStatRow(row: Int, list: List<StatData>): Array<StatData?> {
+    val firstIdx = row * 2
+    val secondIdx = firstIdx + 1
+    val stats = arrayOfNulls<StatData>(2)
+    if (firstIdx in 0..<list.size) stats[0] = list[firstIdx]
+    if (secondIdx in 0..<list.size) stats[1] = list[secondIdx]
+    return stats
 }
 
 // ─── Sample Data ──────────────────────────────────────────────────────────────
@@ -156,40 +275,54 @@ private val mixedStats = listOf(
 
 // ─── Preview ─────────────────────────────────────────────────────────────────
 
-@Preview(showBackground = true, name = "Dashboard — All Positive")
+@Preview
 @Composable
-private fun DashboardAllPositivePreview() {
-    AppTheme {
-        StatsDashboard(stats = allPositiveStats)
+fun TrendIndicatorPreview() {
+    val data = allPositiveStats.first()
+    TrendIndicator(
+        percentage = data.percentage,
+        isPositive = data.isPositive,
+        modifier = Modifier.background(Color.Red)
+    )
+}
+
+@Preview
+@Composable
+fun StatCardReview() {
+    val data = allPositiveStats.first()
+    StatCard(
+        label = data.label,
+        value = data.value,
+        emoji = data.emoji,
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        TrendIndicator(
+            percentage = data.percentage,
+            isPositive = data.isPositive,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)
+        )
     }
 }
 
-@Preview(showBackground = true, name = "Dashboard — Mixed Trends")
+@Preview(showBackground = true)
 @Composable
-private fun DashboardMixedPreview() {
-    AppTheme {
-        StatsDashboard(stats = mixedStats)
-    }
+fun StatDashboardAllPositivePreview() {
+    StatsDashboard(
+        modifier = Modifier.fillMaxWidth(),
+        allPositiveStats
+    )
 }
 
-@Preview(
-    showBackground = true,
-    name = "Dashboard — Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@Preview
 @Composable
-private fun DashboardDarkPreview() {
-    AppTheme {
-        StatsDashboard(stats = mixedStats)
-    }
+fun StatDashboardAllMixedPreview() {
+    StatsDashboard(
+        modifier = Modifier.fillMaxWidth(),
+        mixedStats
+    )
 }
 
-// ─── Câu Hỏi Thảo Luận ───────────────────────────────────────────────────────
-/*
- * Sau khi hoàn thành, thảo luận với nhóm:
- *
- * Q1: Tại sao IntrinsicSize.Max lại work? Compose tính height như thế nào?
- * Q2: Nếu không dùng IntrinsicSize.Max thì UI trông thế nào?
- * Q3: graphicsLayer vs Modifier.rotate() — khi nào dùng cái nào?
- * Q4: Slot API ở StatCard có lợi gì so với truyền thẳng TrendIndicator?
- */

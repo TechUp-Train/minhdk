@@ -21,6 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.apero.composetraining.common.AppTheme
+import com.apero.composetraining.session5.exercises.tab_app_exercise.data.sampleCategories
+import com.apero.composetraining.session5.exercises.tab_app_exercise.data.samplePopular
+import com.apero.composetraining.session5.exercises.tab_app_exercise.data.sampleRecentSearches
+import com.apero.composetraining.session5.exercises.tab_app_exercise.data.sampleTrending
+import com.apero.composetraining.session5.exercises.tab_app_exercise.expoler.ExploreScreen
+import com.apero.composetraining.session5.exercises.tab_app_exercise.expoler.SearchResultScreen
 import com.apero.composetraining.session5.exercises.tab_app_exercise.home.ArticleDetailScreen
 import com.apero.composetraining.session5.exercises.tab_app_exercise.home.HomeScreen
 import kotlinx.serialization.Serializable
@@ -122,11 +128,6 @@ private val navbarItems = listOf(
     NavbarItem(1, "Explore", Icons.Default.Explore),
     NavbarItem(2, "Profile", Icons.Default.AccountCircle)
 )
-
-@Composable
-private fun ExploreScreen() {
-
-}
 
 @Composable
 private fun ResultScreen() {
@@ -231,12 +232,15 @@ private fun SetupNavBar(
             }
 
             entry<Explore> {
-                ExploreScreen()
+                ExploreScreen(
+                    recentSearches = sampleRecentSearches,
+                    popular = samplePopular,
+                    categories = sampleCategories,
+                    trending = sampleTrending
+                )
             }
-
-            entry<SearchResult> {
-                ResultScreen()
-            }
+0
+            entry<SearchResult> {}
 
             entry<Profile> {
                 ProfileScreen()

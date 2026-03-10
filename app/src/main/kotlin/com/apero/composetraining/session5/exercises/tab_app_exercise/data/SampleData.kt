@@ -1,5 +1,8 @@
 package com.apero.composetraining.session5.exercises.tab_app_exercise.data
 
+
+//--------------------------------------------Home--------------------------------------------
+
 val sampleFeaturedStories = listOf(
     FeaturedStory(
         id = 0,
@@ -48,5 +51,59 @@ val sampleFeaturedStories = listOf(
             name = "Emily Carter",
             avatar = "https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg"
         )
+    )
+)
+
+
+//--------------------------------------------Expoler--------------------------------------------
+
+val sampleRecentSearches = listOf(
+    "Mountain Cabins",
+    "Paris Cafes",
+    "Coastal Hikes"
+)
+
+val samplePopular = listOf(
+    PopularItem(
+        "Beaches",
+        "https://kenh14cdn.com/2020/7/17/brvn-15950048783381206275371.jpg"
+    ),
+    PopularItem(
+        "Mountains",
+        "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg"
+    ),
+    PopularItem(
+        "Cities",
+        "https://images.pexels.com/photos/374870/pexels-photo-374870.jpeg"
+    ),
+    PopularItem(
+        "Nature",
+        "https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg"
+    )
+)
+
+val sampleCategories = listOf(
+    "Adventure",
+    "Photography",
+    "Food & Drink",
+    "Wellness",
+    "Culture"
+)
+
+val sampleTrending = listOf(
+    Trending(
+        "Venice, Italy",
+        "Romantic canals & history",
+        "https://images.pexels.com/photos/208701/pexels-photo-208701.jpeg"
+    ),
+    Trending(
+        "Kyoto, Japan",
+        "Temples & zen gardens",
+        "https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg"
+    ),
+    Trending(
+        "Bali, Indonesia",
+        "Beaches & tropical vibes",
+        "https://images.pexels.com/photos/753626/pexels-photo-753626.jpeg"
     )
 )
