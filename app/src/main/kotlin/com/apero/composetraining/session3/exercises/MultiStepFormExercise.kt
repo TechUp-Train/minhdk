@@ -1,27 +1,56 @@
 package com.apero.composetraining.session3.exercises
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
+import android.graphics.drawable.Icon
+import android.media.Image
+import android.util.Log
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Female
+import androidx.compose.material.icons.filled.Male
+import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.SupervisedUserCircle
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.apero.composetraining.R
 import com.apero.composetraining.common.AppTheme
+import com.apero.composetraining.session1.exercises.OceanBlue
+import java.text.SimpleDateFormat
+import java.util.Date
 
 /**
  * ⭐⭐⭐⭐ BÀI TẬP 4: Multi-step Registration Form (Advanced)
@@ -87,12 +116,19 @@ data class FormState(
 
 val FormState.totalSteps: Int get() = 4
 val FormState.progress: Float get() = (currentStep + 1).toFloat() / totalSteps.toFloat()
-val FormState.stepTitle: String get() = when (currentStep) {
-    0 -> "Personal Info"
-    1 -> "Contact Details"
-    2 -> "Preferences"
-    3 -> "Review & Submit"
-    else -> ""
+val FormState.stepTitle: String
+    get() = when (currentStep) {
+        0 -> "Personal Info"
+        1 -> "Contact Details"
+        2 -> "Preferences"
+        3 -> "Review & Submit"
+        else -> ""
+    }
+
+@SuppressLint("SimpleDateFormat")
+fun formatMillisToDate(millis: Long): String {
+    val sdf = SimpleDateFormat("MM/dd/yyyy")
+    return sdf.format(Date(millis))
 }
 
 /**
@@ -186,22 +222,6 @@ private fun FormContent(
     onAction: (FormAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement FormContent
-    // - Column(fillMaxSize, padding=16.dp)
-    // - FormHeader(state)
-    // - Spacer(16.dp)
-    // - LinearProgressIndicator(progress = state.progress, fillMaxWidth)
-    // - Spacer(4.dp) + Text "Step ${currentStep+1} of ${totalSteps}: ${stepTitle}" (primary)
-    // - Spacer(24.dp)
-    // - AnimatedContent(targetState = state.currentStep,
-    //       transitionSpec = { // slide từ phải vào nếu đi tới, từ trái vào nếu đi lùi
-    //           val direction = if (targetState > initialState) 1 else -1
-    //           slideInHorizontally { it * direction } togetherWith slideOutHorizontally { it * -direction }
-    //       },
-    //       modifier = Modifier.weight(1f)
-    //   ) { step → when(step) { 0 → PersonalInfoStep, 1 → ContactStep, 2 → PreferencesStep, 3 → ReviewStep } }
-    // - FormNavigationButtons(state, onAction)
-    Box {}
 }
 
 // ─── Form Header ──────────────────────────────────────────────────────────────
@@ -211,41 +231,254 @@ private fun FormHeader(
     state: FormState,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement FormHeader
-    // - Column: Text "Registration Form" (headlineMedium) + Text subtitle (bodyMedium, onSurfaceVariant)
-    Box {}
+
 }
 
 // ─── Step 1: Personal Info ────────────────────────────────────────────────────
 
 @Composable
-private fun PersonalInfoStep(
-    state: FormState,
-    onAction: (FormAction) -> Unit,
-    modifier: Modifier = Modifier,
+fun RowScope.GenderChip(
+    label: String,
+    icon: ImageVector,
+    selected: Boolean
 ) {
-    // TODO: Implement PersonalInfoStep
-    // - Column(fillMaxSize, verticalScroll, spacedBy=12.dp)
-    // - ValidatedTextField firstName (error = state.firstNameError)
-    // - ValidatedTextField lastName (error = state.lastNameError)
-    // - OutlinedTextField birthYear (optional, keyboardType = Number)
-    Box {}
+    val bg = if (selected)
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+    else
+        MaterialTheme.colorScheme.surfaceVariant
+
+    val borderColor = if (selected)
+        MaterialTheme.colorScheme.primary
+    else
+        MaterialTheme.colorScheme.outlineVariant
+
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = bg,
+        border = BorderStroke(1.dp, borderColor),
+        modifier = Modifier
+            .weight(1f)
+            .height(48.dp)
+            .clickable { }
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                tint = if (selected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.width(6.dp))
+            Text(
+                label,
+                color = if (selected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfileAvatar(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        contentAlignment = Alignment.BottomEnd,
+        modifier = modifier
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.surfaceVariant
+        ) {
+            Image(
+                painter = ColorPainter(color = OceanBlue),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        }
+
+        Surface(
+            modifier = Modifier
+                .size(30.dp)
+                .offset(x = (-4).dp, y = (-4).dp),
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.primary
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = Icons.Default.Camera,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ColumnScope.InfoTitle(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        "Avatar Picker",
+        style = MaterialTheme.typography.titleMedium,
+        color = Color.White,
+        fontSize = 25.sp,
+        fontWeight = FontWeight.Bold
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    Text(
+        "Optional: Choose your identity",
+        style = MaterialTheme.typography.bodyMedium,
+        color = Color.White,
+        fontWeight = FontWeight.Normal
+    )
+}
+
+@Composable
+private fun InputField(
+    modifier: Modifier = Modifier,
+    input: String,
+    icon: ImageVector,
+    hint: String,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = input,
+        onValueChange = onValueChange,
+        label = { Text(hint) },
+        leadingIcon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = null
+            )
+        },
+        singleLine = true,
+        shape = RoundedCornerShape(12.dp),
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@Composable
+fun BirthDatePicker(
+    date: String,
+    onDateSelected: (String) -> Unit
+) {
+    var openDatePicker by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier.clickable {
+            openDatePicker = true
+        }
+    ) {
+        OutlinedTextField(
+            value = date,
+            onValueChange = {},
+            label = { Text("Date of Birth") },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.CalendarMonth,
+                    contentDescription = null
+                )
+            },
+            placeholder = { Text("MM/DD/YYYY") },
+            shape = RoundedCornerShape(12.dp),
+            singleLine = true,
+            readOnly = true,
+            enabled = false,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
+    if (openDatePicker) {
+        val datePickerState = rememberDatePickerState()
+
+        DatePickerDialog(
+            onDismissRequest = { openDatePicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val millis = datePickerState.selectedDateMillis
+                        if (millis != null) {
+                            val formatted = formatMillisToDate(millis)
+                            onDateSelected(formatted)
+                        }
+                        openDatePicker = false
+                    }
+                ) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { openDatePicker = false }) {
+                    Text("Cancel")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
 }
 
 // ─── Step 2: Contact ──────────────────────────────────────────────────────────
 
+@Preview
 @Composable
-private fun ContactStep(
-    state: FormState,
-    onAction: (FormAction) -> Unit,
-    modifier: Modifier = Modifier,
+fun ContactForm(
+    state: FormState = FormState(),
+    onAction: (FormAction) -> Unit = {},
 ) {
-    // TODO: Implement ContactStep
-    // - Column(fillMaxSize, verticalScroll, spacedBy=12.dp)
-    // - ValidatedTextField email (error = emailError, keyboardType = Email)
-    // - ValidatedTextField phone (error = phoneError, keyboardType = Phone)
-    // - OutlinedTextField city (optional)
-    Box {}
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 24.dp, vertical = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        ProfileAvatar(modifier = Modifier.size(120.dp))
+
+        Spacer(Modifier.height(12.dp))
+
+        InfoTitle()
+
+        Spacer(Modifier.height(28.dp))
+
+        InputField(
+            input = state.firstName,
+            icon = Icons.Default.SupervisedUserCircle,
+            hint = "First name",
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            onAction(FormAction.UpdateFirstName(it))
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        InputField(
+            input = state.lastName,
+            icon = Icons.Default.SupervisedUserCircle,
+            hint = "Last name",
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            onAction(FormAction.UpdateLastName(it))
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        BirthDatePicker(date = state.birthYear) {
+            onAction(FormAction.UpdateBirthYear(it))
+        }
+    }
 }
 
 // ─── Step 3: Preferences ─────────────────────────────────────────────────────
@@ -256,16 +489,7 @@ private fun PreferencesStep(
     onAction: (FormAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement PreferencesStep
-    // - Column(fillMaxSize, verticalScroll, spacedBy=16.dp)
-    // - SwitchRow "Receive newsletter" (receiveNewsletter)
-    // - SwitchRow "Push notifications" (receiveNotifications)
-    // - HorizontalDivider
-    // - Text "Preferred language"
-    // - listOf("Vietnamese", "English", "Japanese", "Korean").forEach { lang →
-    //     Row: RadioButton(selected = state.preferredLanguage == lang, onClick = ...) + Text lang
-    //   }
-    Box {}
+
 }
 
 // ─── Step 4: Review ───────────────────────────────────────────────────────────
@@ -275,14 +499,6 @@ private fun ReviewStep(
     state: FormState,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement ReviewStep
-    // - Column(fillMaxSize, verticalScroll, spacedBy=16.dp)
-    // - Text "Review your information" (titleMedium)
-    // - ReviewSection("Personal Info") { ReviewRow("Name", ...) + ReviewRow("Birth Year", ...) }
-    // - ReviewSection("Contact") { email, phone, city }
-    // - ReviewSection("Preferences") { newsletter, notifications, language }
-    // - Text "Nhấn Submit để hoàn tất" (bodySmall, onSurfaceVariant)
-    Box {}
 }
 
 @Composable
@@ -291,9 +507,6 @@ private fun ReviewSection(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    // TODO: Implement ReviewSection
-    // - Card(fillMaxWidth, surfaceVariant color) { Column(padding=12.dp) { Text title + content() } }
-    Box {}
 }
 
 @Composable
@@ -302,9 +515,6 @@ private fun ReviewRow(
     value: String,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement ReviewRow
-    // - Row(fillMaxWidth, SpaceBetween): Text label (onSurfaceVariant) + Text value (Medium)
-    Box {}
 }
 
 // ─── Navigation Buttons ───────────────────────────────────────────────────────
@@ -315,12 +525,6 @@ private fun FormNavigationButtons(
     onAction: (FormAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement FormNavigationButtons
-    // - val isLastStep = state.currentStep == state.totalSteps - 1
-    // - Row(fillMaxWidth, spacedBy=12.dp, padding top=16.dp)
-    // - Nếu currentStep > 0: OutlinedButton "Back" (weight(1f)) → onAction(PrevStep)
-    // - Button "Next" hoặc "Submit" (weight(1f)) → onAction(NextStep) hoặc onAction(Submit)
-    Box {}
 }
 
 // ─── Shared Components ────────────────────────────────────────────────────────
@@ -334,10 +538,6 @@ private fun ValidatedTextField(
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
 ) {
-    // TODO: Implement ValidatedTextField
-    // - OutlinedTextField với isError = errorMessage != null
-    // - supportingText = errorMessage?.let { { Text(it) } }
-    Box {}
 }
 
 @Composable
@@ -347,10 +547,6 @@ private fun SwitchRow(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement SwitchRow
-    // - Row(fillMaxWidth, SpaceBetween, CenterVertically)
-    // - Text label (bodyLarge) + Switch(checked, onCheckedChange)
-    Box {}
 }
 
 // ─── Success Screen ───────────────────────────────────────────────────────────
@@ -360,12 +556,6 @@ private fun SubmissionSuccessScreen(
     formState: FormState,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: Implement SubmissionSuccessScreen
-    // - Column(fillMaxSize, padding=32.dp, Center, CenterHorizontally)
-    // - Surface icon (80dp, extraLarge, primaryContainer) { Box(Center) { Icon(Check, 48dp) } }
-    // - Spacer(24.dp) + Text "Registration Complete!" (headlineMedium)
-    // - Spacer(8.dp) + Text "Welcome, ${firstName} ${lastName}!" (bodyLarge, onSurfaceVariant)
-    Box {}
 }
 
 // ─── Previews ─────────────────────────────────────────────────────────────────
