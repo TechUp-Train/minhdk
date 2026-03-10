@@ -29,6 +29,7 @@ import com.apero.composetraining.session5.exercises.tab_app_exercise.expoler.Exp
 import com.apero.composetraining.session5.exercises.tab_app_exercise.expoler.SearchResultScreen
 import com.apero.composetraining.session5.exercises.tab_app_exercise.home.ArticleDetailScreen
 import com.apero.composetraining.session5.exercises.tab_app_exercise.home.HomeScreen
+import com.apero.composetraining.session5.exercises.tab_app_exercise.profile.ProfileScreen
 import kotlinx.serialization.Serializable
 
 /**
@@ -130,21 +131,6 @@ private val navbarItems = listOf(
 )
 
 @Composable
-private fun ResultScreen() {
-
-}
-
-@Composable
-private fun ProfileScreen() {
-
-}
-
-@Composable
-private fun EditProfileScreen() {
-
-}
-
-@Composable
 private fun RowScope.BottomBarItem(
     icon: ImageVector,
     label: String,
@@ -239,15 +225,9 @@ private fun SetupNavBar(
                     trending = sampleTrending
                 )
             }
-0
-            entry<SearchResult> {}
 
             entry<Profile> {
                 ProfileScreen()
-            }
-
-            entry<EditProfile> {
-                EditProfileScreen()
             }
         }
     )
@@ -309,10 +289,7 @@ fun TabAppScreen() {
                 addCategory(Intent.CATEGORY_HOME)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
-
         }
-
-
     }
 }
 
