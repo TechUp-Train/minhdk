@@ -1,7 +1,10 @@
 package com.apero.composetraining.session5.exercises.authtabflowexercise
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
@@ -14,11 +17,15 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.apero.composetraining.common.AppTheme
-import com.apero.composetraining.common.Login
+import com.apero.composetraining.common.Home
+import com.apero.composetraining.session2.exercises.DashboardScreen
+import com.apero.composetraining.session5.exercises.HomeScreen
+import com.apero.composetraining.session5.exercises.WelcomeScreen
 import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow.forgotpassword.ForgotPasswordScreen
 import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow.login.LoginScreen
 import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow.register.RegisterScreen
 import com.apero.composetraining.session5.exercises.authtabflowexercise.base.BaseBottomBar
+import com.apero.composetraining.session5.exercises.authtabflowexercise.navigation.AppFlow
 import com.apero.composetraining.session5.exercises.authtabflowexercise.navigation.AuthFlow
 import com.apero.composetraining.session5.exercises.authtabflowexercise.navigation.navbarItems
 
@@ -39,10 +46,10 @@ import com.apero.composetraining.session5.exercises.authtabflowexercise.navigati
  */
 
 fun handleNavigateAuthFlow(destination: AuthFlow, backStack: NavBackStack<NavKey>) {
-    when(destination) {
+    when (destination) {
         is AuthFlow.Login -> {
-            if(backStack.contains(AuthFlow.Login)) {
-                while(backStack.last() is AuthFlow.Login) {
+            if (backStack.contains(AuthFlow.Login)) {
+                while (backStack.last() is AuthFlow.Login) {
                     backStack.removeLastOrNull()
                 }
             }
@@ -57,59 +64,107 @@ fun handleNavigateAuthFlow(destination: AuthFlow, backStack: NavBackStack<NavKey
         }
 
         is AuthFlow.Back -> {
-            if(backStack.size > 1) backStack.removeLastOrNull()
+            if (backStack.size > 1) backStack.removeLastOrNull()
         }
     }
 }
 
 @Composable
-fun AuthFlow() {
+fun AuthFlow(
+    onAuthenticated: (Boolean) -> Unit
+) {
     val backstack = rememberNavBackStack(AuthFlow.Login)
+
+    val navigation = { destination: AuthFlow ->
+        handleNavigateAuthFlow(destination, backstack)
+    }
 
     NavDisplay(
         backStack = backstack,
         entryProvider = entryProvider {
             entry<AuthFlow.Login> {
-                LoginScreen()
+                LoginScreen(
+                    onAction = { action ->
+                        onAuthenticated(true)
+                    },
+                    onNavigate = navigation
+                )
             }
 
             entry<AuthFlow.Register> {
-                RegisterScreen {
-                    handleNavigateAuthFlow(it, backstack)
-                }
+                RegisterScreen(onNavigate = navigation)
             }
 
             entry<AuthFlow.ForgotPassword> {
-                ForgotPasswordScreen {
-                    handleNavigateAuthFlow(it, backstack)
-                }
+                ForgotPasswordScreen(onNavigate = navigation)
             }
         }
     )
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+private fun SetupNavigation(
+    backstack: NavBackStack<NavKey>
+) {
+
+    NavDisplay(
+        modifier = Modifier.fillMaxSize(),
+        backStack = backstack,
+        entryProvider = entryProvider {
+            entry<AppFlow.Home> {
+                WelcomeScreen()
+            }
+
+            entry<AppFlow.Discover> {
+                HomeScreen()
+            }
+
+            entry<AppFlow.Profile> {
+                DashboardScreen()
+            }
+        }
+    )
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
 @Composable
 private fun AppFlow() {
+
+    val homeBackstack = rememberNavBackStack(AppFlow.Home)
+    val discoverBackstack = rememberNavBackStack(AppFlow.Discover)
+    val profileBackstack = rememberNavBackStack(AppFlow.Profile)
+
+    var curBackstack by remember { mutableStateOf(homeBackstack) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             BaseBottomBar(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .height(80.dp),
                 items = navbarItems,
-                isSelected = { pos ->
-                    true
+                isSelected = selected@{ pos ->
+                    val firstEntry = when (pos) {
+                        0 -> AppFlow.Home
+                        1 -> AppFlow.Discover
+                        2 -> AppFlow.Profile
+                        else -> throw Exception()
+                    }
+                    return@selected curBackstack.contains(firstEntry)
                 },
                 onItemSelected = { pos ->
-
+                    curBackstack = when (pos) {
+                        0 -> homeBackstack
+                        1 -> discoverBackstack
+                        2 -> profileBackstack
+                        else -> throw Exception()
+                    }
                 }
             )
         }
     ) { _ ->
-        
+        SetupNavigation(curBackstack)
     }
 }
 
@@ -117,7 +172,16 @@ private fun AppFlow() {
 fun AuthTabApp() {
     var isAuthenticated by remember { mutableStateOf(false) }
 
-    if (isAuthenticated) AppFlow() else AuthFlow()
+    if (!isAuthenticated) {
+        AuthFlow(
+            onAuthenticated = {
+                isAuthenticated = it
+            }
+        )
+        return
+    }
+
+    AppFlow()
 }
 
 @Preview(showBackground = true)

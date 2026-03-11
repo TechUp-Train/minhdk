@@ -22,11 +22,15 @@ import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow
 import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow.login.component.LoginScreenInputFields
 import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow.login.component.LoginScreenTitle
 import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow.login.component.LoginScreenRememberPassword
+import com.apero.composetraining.session5.exercises.authtabflowexercise.authflow.login.intent.LoginIntent
 import com.apero.composetraining.session5.exercises.authtabflowexercise.base.BaseButton
+import com.apero.composetraining.session5.exercises.authtabflowexercise.navigation.AuthFlow
 
-@Preview
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onAction: (LoginIntent) -> Unit,
+    onNavigate: (AuthFlow) -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var keepLoggedIn by remember { mutableStateOf(false) }
@@ -51,7 +55,7 @@ fun LoginScreen() {
             typeEmail = { email = it },
             typePassword = { password = it },
             forgotPassword = {
-                // TODO: Navigate to forgot password
+                onNavigate(AuthFlow.ForgotPassword)
             }
         )
 
@@ -69,14 +73,14 @@ fun LoginScreen() {
             text = "Sign in",
             icon = Icons.AutoMirrored.Filled.ArrowForward,
             onClick = {
-                // TODO : Check logic and navigate to Home
+                onAction(LoginIntent.Login)
             }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         LoginScreenFooter {
-            // TODO: Navigate to create account
+            onNavigate(AuthFlow.Register)
         }
     }
 }
