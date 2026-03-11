@@ -33,10 +33,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.apero.composetraining.common.AppTheme
-import com.apero.composetraining.session5.exercises.data.CartItem
-import com.apero.composetraining.session5.exercises.data.Product
-import com.apero.composetraining.session5.exercises.data.ProductSpec
-import com.apero.composetraining.session5.exercises.data.sampleProductList
 import kotlinx.serialization.Serializable
 
 /**
