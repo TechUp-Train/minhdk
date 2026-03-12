@@ -42,5 +42,6 @@ fun App() {
     }
 }
 
+
 fun getAsyncImageLoader(context: PlatformContext)=
     ImageLoader.Builder(context).crossfade(true).logger(DebugLogger()).build()
