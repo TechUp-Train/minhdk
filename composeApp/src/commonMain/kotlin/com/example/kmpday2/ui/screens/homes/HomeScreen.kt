@@ -27,6 +27,7 @@ fun HomeScreen() {
     val viewModel: MangaViewModel = koinViewModel()
     val mangaState = viewModel.mangaState.collectAsStateWithLifecycle()
 
+    
     LazyColumn(
         modifier = Modifier.fillMaxSize().background(DarkBackground).padding(12.dp)
     ) {
@@ -46,7 +47,7 @@ fun HomeScreen() {
                 },
                 error = {
                     TrendingBannerFailed {
-                        
+
                     }
                 }
             )
