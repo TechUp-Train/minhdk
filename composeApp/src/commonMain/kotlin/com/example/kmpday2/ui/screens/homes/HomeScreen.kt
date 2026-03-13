@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.kmpday2.data.model.UiState
 import com.example.kmpday2.ui.base.StateComposable
 import com.example.kmpday2.ui.screens.homes.components.home.HomeScreenHeader
 import com.example.kmpday2.ui.screens.homes.components.home.NewUpdatesSection
@@ -46,9 +44,7 @@ fun HomeScreen() {
                     TrendingBannerPager(it)
                 },
                 error = {
-                    TrendingBannerFailed {
-
-                    }
+                    TrendingBannerFailed(viewModel::handleBannerCardIntent)
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))

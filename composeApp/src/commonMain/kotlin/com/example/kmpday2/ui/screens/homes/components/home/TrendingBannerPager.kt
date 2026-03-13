@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,18 +32,24 @@ import androidx.compose.ui.unit.sp
 import com.example.kmpday2.data.model.Manga
 import com.example.kmpday2.ui.base.TextButton
 import com.example.kmpday2.ui.base.shimmerEffect
+import com.example.kmpday2.ui.screens.homes.intents.BannerCardIntent
 import kotlinx.datetime.Month
 
 @Composable
 fun TrendingBannerPlaceholder() {
     Box(
-        modifier = Modifier.fillMaxWidth().height(400.dp).clip(RoundedCornerShape(12.dp)).shimmerEffect()
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(400.dp)
+            .padding(16.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .shimmerEffect()
     )
 }
 
 @Composable
 fun TrendingBannerFailed(
-    retry: () -> Unit
+    sendIntent: (BannerCardIntent) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -59,7 +66,7 @@ fun TrendingBannerFailed(
             text = "Retry",
             modifier = Modifier.padding(7.dp)
         ) {
-            retry()
+            sendIntent(BannerCardIntent.Reload)
         }
     }
 }
@@ -100,12 +107,12 @@ fun TrendingBannerPager(
 
     Column(
         modifier = Modifier.fillMaxWidth()
-            .height(400.dp)
     ) {
 
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().height(400.dp),
+            key = { page -> data[page].id }
         ) { page ->
             val item = data[page]
             TrendingBannerCard(

@@ -6,6 +6,7 @@ import com.example.kmpday2.data.model.Manga
 import com.example.kmpday2.data.model.RequestStatus
 import com.example.kmpday2.data.model.UiState
 import com.example.kmpday2.data.repository.MangaRepository
+import com.example.kmpday2.ui.screens.homes.intents.BannerCardIntent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,5 +34,19 @@ class MangaViewModel(
                 else -> {}
             }
         }
+    }
+
+    fun handleBannerCardIntent(intent: BannerCardIntent) {
+        when(intent) {
+            is BannerCardIntent.Reload -> {
+                _mangaState.value = UiState.Loading
+                reloadManga()
+            }
+            else -> {}
+        }
+    }
+
+    fun reloadManga() {
+        getManga()
     }
 }

@@ -52,7 +52,6 @@ fun TrendingBannerCard(
 
         AsyncImage(
             model = imageUrl,
-            placeholder = painterResource(Res.drawable.ic_watch),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()

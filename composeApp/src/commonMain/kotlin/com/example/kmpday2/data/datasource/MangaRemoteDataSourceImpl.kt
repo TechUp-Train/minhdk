@@ -13,7 +13,7 @@ class MangaRemoteDataSourceImpl: MangaRemoteDataSource {
         delay(1500L)
         val now = Clock.System.now().toEpochMilliseconds()
         val lastDigit = now % (now / 10)
-        if(lastDigit > 3) return@withContext sampleTrendingBanners else throw Exception("Connection is failed !")
+        if(lastDigit > 4) return@withContext sampleTrendingBanners else throw Exception("Connection is failed !")
     }
 
 }

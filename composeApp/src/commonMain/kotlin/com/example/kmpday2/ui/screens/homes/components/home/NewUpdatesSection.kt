@@ -35,7 +35,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 private fun UpdateItem(
-    imageUrl: String,
+    imageUrl: String = "https://files01.duytan.edu.vn/svruploads/ktiengnhat-duytan/upload/images/638565444451441731-anime-nhat-ban.png",
     title: String,
     genre: String,
     chapter: String
@@ -147,7 +147,6 @@ fun NewUpdatesSection(
                 .padding(start = 16.dp, end = 8.dp)
         ) {
             UpdateItem(
-                imageUrl = "https://i.imgur.com/YdygmNR.jpeg",
                 title = "Jujutsu Kaisen",
                 genre = "Action, Fantasy",
                 chapter = "CH. 254"
@@ -156,7 +155,6 @@ fun NewUpdatesSection(
             Spacer(Modifier.width(14.dp))
 
             UpdateItem(
-                imageUrl = "https://i.imgur.com/yZyRKei.jpeg",
                 title = "One Piece",
                 genre = "Adventure",
                 chapter = "CH. 1110"
@@ -165,7 +163,6 @@ fun NewUpdatesSection(
             Spacer(Modifier.width(14.dp))
 
             UpdateItem(
-                imageUrl = "https://i.imgur.com/Zt3gQAo.jpeg",
                 title = "Spy x Family",
                 genre = "Comedy, Spy",
                 chapter = "CH. 88"
