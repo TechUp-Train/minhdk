@@ -49,6 +49,9 @@ kotlin {
             implementation(libs.coil.network.ktor)
             implementation(libs.kotlinx.serialization.json)
 
+            // Krop
+            implementation(libs.ui)
+
         }
 
         iosMain.dependencies {

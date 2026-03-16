@@ -26,6 +26,7 @@ navigation3Ui = "1.0.0-alpha06"
 ktor = "2.3.12"
 
 coilComposeCore = "3.0.0-alpha06"
+ui = "0.2.0"
 
 [libraries]
 adaptive-navigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "adaptiveNavigation3" }
@@ -72,6 +73,7 @@ coil = { module = "io.coil-kt.coil3:coil", version.ref = "coilComposeCore" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coilComposeCore" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilComposeCore" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coilComposeCore" }
+ui = { module = "com.attafitamim.krop:ui", version.ref = "ui" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

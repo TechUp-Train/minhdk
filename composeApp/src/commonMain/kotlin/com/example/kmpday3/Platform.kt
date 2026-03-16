@@ -1,6 +1,6 @@
 package com.example.kmpday3
 
-import okio.Path
+import androidx.compose.ui.graphics.ImageBitmap
 
 interface Platform {
     val name: String
@@ -9,3 +9,7 @@ interface Platform {
 expect fun getPlatform(): Platform
 
 expect abstract class AppContext
+
+expect class PlatformDrawable
+
+expect fun loadImage(context: AppContext, res: PlatformDrawable): ImageBitmap?
