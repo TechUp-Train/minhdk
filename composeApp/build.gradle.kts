@@ -51,9 +51,8 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
         }
 
-        val ktorfitVersion = "2.7.2"
-
         val commonMain by getting{
+            val ktorfitVersion = "2.7.2"
             dependencies{
                 implementation("de.jensklingenberg.ktorfit:ktorfit-lib:$ktorfitVersion")
                 // adapter for flow
