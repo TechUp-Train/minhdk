@@ -12,4 +12,4 @@ expect abstract class AppContext
 
 expect class PlatformDrawable
 
-expect fun loadImage(context: AppContext, res: PlatformDrawable): ImageBitmap?
+expect suspend fun getImage(): ByteArray?

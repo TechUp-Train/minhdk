@@ -14,6 +14,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        activity = this
+
         setContent {
 
             setSingletonImageLoaderFactory { context ->

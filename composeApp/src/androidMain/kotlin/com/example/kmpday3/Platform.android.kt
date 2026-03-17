@@ -2,13 +2,17 @@ package com.example.kmpday3
 
 import android.os.Build
 import android.content.Context
-import android.graphics.BitmapFactory
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import okio.Path
 import okio.Path.Companion.toPath
-import org.jetbrains.compose.resources.DrawableResource
 import java.io.File
+
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -29,16 +33,20 @@ fun getImageCachePath(
     return dir.absolutePath.toPath()
 }
 
-actual fun loadImage(context: AppContext, res: PlatformDrawable): ImageBitmap? {
-    val options = BitmapFactory.Options().apply {
-        inSampleSize = 4
-        inPreferredConfig = android.graphics.Bitmap.Config.ARGB_8888
-    }
-    val bitmap = BitmapFactory.decodeResource(
-        context.resources,
-        res,
-        options
-    )
-    return bitmap.asImageBitmap()
-}
+lateinit var activity: ComponentActivity   // cần inject activity từ Android host
 
+actual suspend fun getImage(): ByteArray? {
+    return suspendCancellableCoroutine { continuation ->
+        val launcher = activity.registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            if (uri == null) {
+                continuation.resume(null)
+                return@registerForActivityResult
+            }
+            val bytes = activity.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+            continuation.resume(bytes)
+        }
+        launcher.launch("image/*")
+    }
+}
