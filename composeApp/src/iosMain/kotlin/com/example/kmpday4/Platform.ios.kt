@@ -1,5 +1,8 @@
 package com.example.kmpday4
 
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.HttpClientEngineFactory
+import io.ktor.client.engine.darwin.Darwin
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
@@ -7,3 +10,9 @@ class IOSPlatform: Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
+
+actual fun getNetworkEngine(): HttpClientEngineFactory<*> = Darwin
+
+actual fun HttpClientConfig<*>.configEngine() {
+
+}

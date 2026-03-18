@@ -31,6 +31,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
 
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation("io.insert-koin:koin-android:4.1.1")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -42,13 +44,23 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            // Coil set up
+            // navigation
+            implementation(libs.navigation3.ui)
+
+            // Coil set up + Coil
             implementation(libs.bundles.ktor.common)
             implementation(libs.coil.compose.core)
             implementation(libs.coil.compose)
             implementation(libs.coil)
             implementation(libs.coil.network.ktor)
             implementation(libs.kotlinx.serialization.json)
+
+            // Ktor Coroutine
+            implementation(libs.ktor.client.core)
+            implementation(libs.kotlinx.coroutines.core)
+
+            // Koin
+            implementation("io.insert-koin:koin-core:4.1.1")
         }
 
         iosMain.dependencies {

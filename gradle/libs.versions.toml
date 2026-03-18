@@ -28,6 +28,8 @@ ktor = "3.4.1"
 coilComposeCore = "3.0.0-alpha06"
 ui = "0.2.0"
 
+kotlinx-coroutines = "1.10.2"
+
 [libraries]
 adaptive-navigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "adaptiveNavigation3" }
 components-resources-v1102 = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
@@ -68,6 +70,8 @@ ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serializati
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-json = { group = "io.ktor", name = "ktor-client-json", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coilComposeCore" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coilComposeCore" }
