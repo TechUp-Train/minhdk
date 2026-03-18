@@ -51,15 +51,6 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
         }
 
-        val commonMain by getting{
-            val ktorfitVersion = "2.7.2"
-            dependencies{
-                implementation("de.jensklingenberg.ktorfit:ktorfit-lib:$ktorfitVersion")
-                // adapter for flow
-                implementation("de.jensklingenberg.ktorfit:ktorfit-converters-flow:$ktorfitVersion")
-            }
-        }
-
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
@@ -99,4 +90,3 @@ android {
 dependencies {
     debugImplementation(libs.compose.uiTooling)
 }
-
