@@ -1,5 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -35,6 +36,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation("io.insert-koin:koin-android:4.1.1")
         }
+
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -75,9 +77,6 @@ kotlin {
     }
 }
 
-val githubApiToken: String = project.findProperty("GITHUB_API_TOKEN") as String?
-    ?: error("GITHUB_API_TOKEN not found in local.properties")
-
 android {
     namespace = "com.minhdk.githubkmp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -89,7 +88,15 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "GITHUB_API_TOKEN", "\"$githubApiToken\"")
+
+        // build api key
+        val localProps = rootProject.file("local.properties")
+        val props = Properties()
+        if (localProps.exists()) {
+            props.load(localProps.inputStream())
+        }
+        val githubApiKey = props.getProperty("GITHUB_API_TOKEN") ?: ""
+        buildConfigField("String", "GITHUB_API_TOKEN", "\"$githubApiKey\"")
     }
     packaging {
         resources {
