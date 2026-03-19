@@ -7,9 +7,9 @@ import kotlinx.serialization.KSerializer
 
 interface BaseService {
 
-    fun HttpRequestBuilder.attachDomain(subDomain: String, vararg values: String)
+    fun HttpRequestBuilder.path(subDomain: String, vararg values: String)
 
-    fun HttpRequestBuilder.addHeaders(headers: Map<String, String>)
+    fun HttpRequestBuilder.header(headers: Map<String, String>)
 
     suspend fun <T> request(method: HttpMethod, serializer: KSerializer<T>, config: HttpRequestBuilder.() -> Unit): Response<T>
 

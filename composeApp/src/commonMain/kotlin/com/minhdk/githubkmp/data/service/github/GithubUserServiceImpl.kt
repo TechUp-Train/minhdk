@@ -7,10 +7,8 @@ import com.minhdk.githubkmp.getGithubApiToken
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpMethod
 
-class GithubUserServiceImpl(
-    private val client: HttpClient,
-    private val baseHost: String
-): BaseServiceImpl(client, baseHost), GithubUserService {
+class GithubUserServiceImpl(client: HttpClient, baseHost: String) :
+    BaseServiceImpl(client, baseHost), GithubUserService {
 
     override fun provideStableHeader(): Map<String, String> {
         return mapOf(
@@ -21,15 +19,15 @@ class GithubUserServiceImpl(
 
     override suspend fun fetchUser(username: String): Response<UserDto> {
         return request(HttpMethod.Get, UserDto.serializer()) {
-            attachDomain("users/{username}", username)
+            path("users/{username}", username)
         }
     }
 
     override fun fetchFollowers(username: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun fetchFollowing(username: String) {
-        TODO("Not yet implemented")
+
     }
 }

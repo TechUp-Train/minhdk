@@ -57,7 +57,7 @@ open class BaseServiceImpl(
         return json.decodeFromString(serializer, response)
     }
 
-    override fun HttpRequestBuilder.attachDomain(subDomain: String, vararg values: String) {
+    override fun HttpRequestBuilder.path(subDomain: String, vararg values: String) {
         url {
             protocol = URLProtocol.HTTPS
             host = baseHost
@@ -65,7 +65,7 @@ open class BaseServiceImpl(
         }
     }
 
-    override fun HttpRequestBuilder.addHeaders(headers: Map<String, String>) {
+    override fun HttpRequestBuilder.header(headers: Map<String, String>) {
         (provideStableHeader() + headers).forEach { (key, value) ->
             header(key, value)
         }
