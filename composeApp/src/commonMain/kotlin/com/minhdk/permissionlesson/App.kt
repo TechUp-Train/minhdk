@@ -5,9 +5,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-@Preview
-fun App() {
+fun App(context: PlatformContext) {
     MaterialTheme {
-
+        ImageScreen(context)
     }
 }
