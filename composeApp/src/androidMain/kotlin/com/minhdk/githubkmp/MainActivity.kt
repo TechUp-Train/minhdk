@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.minhdk.githubkmp.data.service.github.GithubUserService
+import com.minhdk.githubkmp.data.core.service.github.GithubUserService
 import org.koin.android.ext.android.inject
 import kotlin.getValue
 

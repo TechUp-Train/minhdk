@@ -16,20 +16,20 @@ junit = "4.13.2"
 koinCore = "4.1.1"
 koinCompose = "4.1.1"
 koinComposeViewmodel = "4.1.1"
-kotlin = "2.1.0"
+kotlin = "2.3.10"
 kotlinxDatetime = "0.7.1"
 kotlinxSerializationJson = "1.10.0"
 material3 = "1.10.0-alpha05"
 materialIconsExtended = "1.7.3"
 navigation3Ui = "1.0.0-alpha06"
 
-ktor = "3.4.1"
+ktor = "3.0.0"
 
 coilComposeCore = "3.0.0-alpha06"
 
 kotlinx-coroutines = "1.10.2"
 room = "2.7.0-alpha13"
-ksp = "2.1.0-1.0.29"
+ksp = "2.3.2"
 sqlite = "2.5.0-alpha13"
 
 [libraries]

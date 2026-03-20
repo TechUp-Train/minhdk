@@ -1,4 +1,4 @@
-package com.minhdk.githubkmp.data.network
+package com.minhdk.githubkmp.data.config.network
 
 data class RequestException(
     val code: Int,

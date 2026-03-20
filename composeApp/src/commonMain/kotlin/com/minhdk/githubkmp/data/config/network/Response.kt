@@ -1,4 +1,4 @@
-package com.minhdk.githubkmp.data.network
+package com.minhdk.githubkmp.data.config.network
 
 sealed class Response<out T> {
     class Success<T>(val data: T): Response<T>()

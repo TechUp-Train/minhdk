@@ -1,5 +1,5 @@
-package com.minhdk.githubkmp.data.service.base
-import com.minhdk.githubkmp.data.network.Response
+package com.minhdk.githubkmp.data.core.service.base
+import com.minhdk.githubkmp.data.config.network.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete

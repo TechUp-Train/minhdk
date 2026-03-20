@@ -1,16 +1,15 @@
-package com.minhdk.githubkmp.data.service.github
+package com.minhdk.githubkmp.data.core.service.github
 
 import com.minhdk.githubkmp.data.model.UserDto
-import com.minhdk.githubkmp.data.network.Response
-import com.minhdk.githubkmp.data.service.base.BaseService
+import com.minhdk.githubkmp.data.config.network.Response
+import com.minhdk.githubkmp.data.core.service.base.BaseService
+import com.minhdk.githubkmp.data.model.FollowerDto
 
 interface GithubUserService: BaseService {
 
     suspend fun fetchUser(username: String): Response<UserDto>
 
-    fun fetchFollowers(username: String)
-
-    fun fetchFollowing(username: String)
+    suspend fun fetchFollowers(username: String): Response<List<FollowerDto>>
 }
 
 //1. Repository APIs
@@ -28,6 +27,3 @@ interface GithubUserService: BaseService {
 //GET /users/{username}
 //GET /users/{username}/repos
 
-
-//Một số thao tác (Star, Fork) cần token OAuth của người dùng.
-//Các request GET cơ bản có thể dùng API không cần token, nhưng sẽ bị giới hạn rate limit.

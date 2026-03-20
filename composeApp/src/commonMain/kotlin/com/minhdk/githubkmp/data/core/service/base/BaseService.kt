@@ -1,6 +1,6 @@
-package com.minhdk.githubkmp.data.service.base
+package com.minhdk.githubkmp.data.core.service.base
 
-import com.minhdk.githubkmp.data.network.Response
+import com.minhdk.githubkmp.data.config.network.Response
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.KSerializer

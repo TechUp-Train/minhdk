@@ -1,10 +1,10 @@
 package com.minhdk.githubkmp.di
 
-import com.minhdk.githubkmp.data.service.github.GithubUserService
-import com.minhdk.githubkmp.data.service.github.GithubUserServiceImpl
+import com.minhdk.githubkmp.data.core.service.github.GithubUserService
+import com.minhdk.githubkmp.data.core.service.github.GithubUserServiceImpl
 import com.minhdk.githubkmp.configEngine
 import com.minhdk.githubkmp.getNetworkEngine
-import com.minhdk.githubkmp.data.network.RequestException
+import com.minhdk.githubkmp.data.config.network.RequestException
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpResponseValidator
@@ -63,19 +63,6 @@ val networkModule = module {
             retryOnServerErrors(3)
             exponentialDelay()
         }
-
-
-        /*
-        Ktor does not throw exception if not set expectSuccess = true explicit. So using HttpResponseValidator as a thrower
-        to expose custom ex for caller
-        */
-//        HttpResponseValidator {
-//            validateResponse { response ->
-//                if (!response.status.isSuccess()) {
-//                    throw Exception("HTTP ${response.status}")
-//                }
-//            }
-//        }
 
         configEngine()
 
