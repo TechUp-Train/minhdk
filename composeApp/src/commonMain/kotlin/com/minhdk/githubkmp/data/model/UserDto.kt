@@ -1,5 +1,6 @@
 package com.minhdk.githubkmp.data.model
 
+import com.minhdk.githubkmp.data.core.storage.database.entity.EntityUser
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -103,4 +104,19 @@ data class UserDto(
 
     @SerialName("updated_at")
     val updatedAt: String
-)
+) {
+
+    fun toEntity(): EntityUser {
+        return EntityUser(
+            id = id,
+            username = login,
+            name = name ?: "",
+            avatarUrl = avatarUrl,
+            bio = bio ?: "",
+            followers = followers,
+            following = following,
+            publicRepos = publicRepos
+        )
+    }
+
+}

@@ -11,6 +11,8 @@ interface BaseService {
 
     fun HttpRequestBuilder.header(headers: Map<String, String>)
 
+    fun HttpRequestBuilder.params(params: Map<String, String>)
+
     suspend fun <T> request(method: HttpMethod, serializer: KSerializer<T>, config: HttpRequestBuilder.() -> Unit): Response<T>
 
 }

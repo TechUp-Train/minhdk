@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.minhdk.githubkmp.data.core.storage.database.entity.EntityUser
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -17,6 +18,12 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE id = :id LIMIT 1")
     suspend fun getUserById(id: Int): EntityUser?
+
+    @Query("SELECT * FROM User WHERE name = :name LIMIT 1")
+    suspend fun getUserByName(name: String): EntityUser?
+
+    @Query("SELECT * FROM User WHERE username = :name LIMIT 1")
+    fun getUserByNameFlow(name: String): Flow<EntityUser?>
 
     @Query("DELETE FROM User")
     suspend fun clearUser()

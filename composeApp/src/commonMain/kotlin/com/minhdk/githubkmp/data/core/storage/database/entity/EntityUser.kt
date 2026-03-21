@@ -9,8 +9,8 @@ data class EntityUser(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,
-    @ColumnInfo(name = "login")
-    val login: String,
+    @ColumnInfo(name = "username")
+    val username: String,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "avatarUrl")
@@ -24,3 +24,4 @@ data class EntityUser(
     @ColumnInfo(name = "publicRepos")
     val publicRepos: Int
 )
+

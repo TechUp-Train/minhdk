@@ -19,14 +19,14 @@ actual typealias PlatformContext = android.content.Context
 actual fun getNetworkEngine(): HttpClientEngineFactory<*> = OkHttp
 
 actual fun HttpClientConfig<*>.configEngine() {
-    engine {
-        (this as io.ktor.client.engine.okhttp.OkHttpConfig).apply {
-            config {
-                retryOnConnectionFailure(true)
-                // add interceptor, authenticate
-            }
-        }
-    }
+//    engine {
+//        (this as io.ktor.client.engine.okhttp.OkHttpConfig).apply {
+//            config {
+//                retryOnConnectionFailure(false)
+//                // add interceptor, authenticate
+//            }
+//        }
+//    }
 }
 
 actual fun getGithubApiToken(): String {

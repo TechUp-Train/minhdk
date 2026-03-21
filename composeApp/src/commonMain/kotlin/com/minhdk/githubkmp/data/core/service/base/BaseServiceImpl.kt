@@ -7,6 +7,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.head
 import io.ktor.client.request.header
 import io.ktor.client.request.options
+import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -45,7 +46,9 @@ open class BaseServiceImpl(
 
     private suspend fun <T> HttpClient.requestMethod(method: HttpMethod, serializer: KSerializer<T>, config: (HttpRequestBuilder) -> Unit) : T {
         val response = when(method) {
-            HttpMethod.Get -> get { config(this) }
+            HttpMethod.Get -> get {
+                config(this)
+            }
             HttpMethod.Post -> post { config(this) }
             HttpMethod.Put -> put { config(this) }
             HttpMethod.Delete -> delete { config(this) }
@@ -53,8 +56,9 @@ open class BaseServiceImpl(
             HttpMethod.Head -> head { config(this) }
             HttpMethod.Options -> options { config(this) }
             else -> throw Exception("Not supported method!")
-        }.bodyAsText()
-        return json.decodeFromString(serializer, response)
+        }
+        val raw = response.bodyAsText()
+        return json.decodeFromString(serializer, raw)
     }
 
     override fun HttpRequestBuilder.path(subDomain: String, vararg values: String) {
@@ -68,6 +72,12 @@ open class BaseServiceImpl(
     override fun HttpRequestBuilder.header(headers: Map<String, String>) {
         (provideStableHeader() + headers).forEach { (key, value) ->
             header(key, value)
+        }
+    }
+
+    override fun HttpRequestBuilder.params(params: Map<String, String>) {
+        for ((key, value) in params) {
+            parameter(key, value)
         }
     }
 
