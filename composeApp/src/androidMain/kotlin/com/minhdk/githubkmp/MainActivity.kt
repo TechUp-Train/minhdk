@@ -23,10 +23,6 @@ import kotlin.getValue
 
 class MainActivity : ComponentActivity() {
 
-    private val userRepository: UserRepository by inject()
-
-    private val gService: GithubService by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)

@@ -62,14 +62,22 @@ kotlin {
             // Ktor Coroutine
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.coroutines.core)
-            implementation("io.ktor:ktor-server-auth:3.4.1")
+//            implementation("io.ktor:ktor-server-auth:3.4.1")
 
             // Koin
-            implementation("io.insert-koin:koin-core:4.1.1")
+            implementation("io.insert-koin:koin-compose:4.2.0")
+            implementation("io.insert-koin:koin-compose-viewmodel:4.2.0")
+            implementation(libs.koin.annotations)
 
             // Room
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
+
+            // viewmodel
+            api(libs.androidx.lifecycle.viewmodel)
+
+            // icons
+            implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
         }
 
         iosMain.dependencies {

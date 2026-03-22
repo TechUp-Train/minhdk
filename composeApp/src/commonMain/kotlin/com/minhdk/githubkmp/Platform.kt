@@ -2,6 +2,9 @@ package com.minhdk.githubkmp
 
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import coil3.ImageLoader
+import coil3.request.crossfade
+import coil3.util.DebugLogger
 import com.minhdk.githubkmp.data.core.storage.database.AppDatabase
 import com.minhdk.githubkmp.di.appModule
 import com.minhdk.githubkmp.di.databaseModule
@@ -10,6 +13,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngineFactory
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 
 interface Platform {
     val name: String
@@ -32,7 +36,7 @@ expect fun HttpClientConfig<*>.configEngine()
 
 expect fun getGithubApiToken(): String
 
-fun initDependencies(
+fun initAndroidDependencies(
     platformInitialization: KoinApplication.() -> Unit = {}
 ) {
     startKoin {
@@ -40,3 +44,13 @@ fun initDependencies(
         modules(networkModule, databaseModule, appModule)
     }
 }
+
+fun initIosDependencies() {
+    startKoin {
+        modules(networkModule, appModule)
+    }
+}
+
+fun getAsyncImageLoader(context: coil3.PlatformContext)=
+    ImageLoader.Builder(context).crossfade(true).logger(DebugLogger()).build()
+

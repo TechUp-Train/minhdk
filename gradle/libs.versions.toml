@@ -25,12 +25,16 @@ navigation3Ui = "1.0.0-alpha06"
 
 ktor = "3.0.0"
 
-coilComposeCore = "3.0.0-alpha06"
+coilComposeCore = "3.1.0"
 
 kotlinx-coroutines = "1.10.2"
-room = "2.7.0-alpha13"
+room = "2.8.4"
 ksp = "2.3.2"
-sqlite = "2.5.0-alpha13"
+sqlite = "2.6.2"
+
+koinAnnotations = "2.3.1"
+
+androidx-viewmodel = "2.10.0"
 
 [libraries]
 adaptive-navigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "adaptiveNavigation3" }
@@ -78,11 +82,16 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coilComposeCore" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coilComposeCore" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilComposeCore" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coilComposeCore" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilComposeCore" }
 
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koinAnnotations" }
+koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koinAnnotations" }
+
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-viewmodel" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

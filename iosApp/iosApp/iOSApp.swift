@@ -4,7 +4,7 @@ import SwiftUI
 struct iOSApp: App {
 
     init() {
-        PlatformKt.initDependencies()
+        PlatformKt.initIosDependencies()
     }
 
     var body: some Scene {

@@ -6,6 +6,8 @@ import com.minhdk.githubkmp.data.source.user.local.UserLocalDataSource
 import com.minhdk.githubkmp.data.source.user.local.UserLocalDataSourceImpl
 import com.minhdk.githubkmp.data.source.user.remote.UserRemoteDataSource
 import com.minhdk.githubkmp.data.source.user.remote.UserRemoteDataSourceImpl
+import com.minhdk.githubkmp.ui.viewmodel.ProfileViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
@@ -21,4 +23,6 @@ val appModule = module {
     single<UserRepository> {
         UserRepositoryImpl(get(), get())
     }
+
+    viewModel { ProfileViewModel(get()) }
 }
