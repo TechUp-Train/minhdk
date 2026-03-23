@@ -2,7 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Ứng dụng cần quyền truy cập thư viện ảnh để hiển thị hình ảnh.</string>
+
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Ứng dụng cần quyền để lưu ảnh vào thư viện.</string>
+
 </dict>
 </plist>

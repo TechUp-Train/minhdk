@@ -2,44 +2,48 @@ package com.example.aigenerator
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.size
-import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
 import coil3.compose.setSingletonImageLoaderFactory
+import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.util.DebugLogger
-import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
+import com.example.aigenerator.utils.readImagePermission
+
+fun getAsyncImageLoader(context: PlatformContext) =
+    ImageLoader.Builder(context).crossfade(true).logger(DebugLogger()).build()
 
 @Composable
-@Preview
-fun App() {
+fun App(context: MultiPlatformContext) {
 
     setSingletonImageLoaderFactory { context ->
         getAsyncImageLoader(context)
     }
 
-//    LaunchedEffect(Unit) {
-//        HttpClient().use { client ->
-//            val response = client.get("https://api.github.com/users/octocat")
-//            println(response.bodyAsText())
-//        }
-//    }
+    val launcher = rememberPermissionLauncher(readImagePermission)
+    var image by remember { mutableStateOf<PlatformImage?>(null) }
+
+    LaunchedEffect(Unit) {
+
+        val granted = launcher.request()
+
+        if (granted) {
+            val urls = loadLocalImage(context)
+            println("Total: ${urls.size}")
+            image = urls.firstOrNull()
+        }
+
+    }
 
     MaterialTheme {
 
-//        AsyncImage(
-//            model = "https://d28clw9klscyzj.cloudfront.net/legacy/assets/2016-01-31/files/1045.jpg",
-//            contentDescription = "Android Robot",
-//            modifier = Modifier.size(300.dp)
-//        )
+        image?.let {
+            PlatformImage(it)
+        }
+
     }
 }
-
-fun getAsyncImageLoader(context: PlatformContext)=
-    ImageLoader.Builder(context).crossfade(true).logger(DebugLogger()).build()

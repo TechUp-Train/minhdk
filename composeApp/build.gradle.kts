@@ -47,6 +47,7 @@ kotlin {
 
             // Ktor dependencies
             implementation(libs.ktor.client.android)
+            implementation(libs.ktor.client.okhttp)
 
             // Koin
             implementation("io.insert-koin:koin-android")
@@ -69,6 +70,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
+            implementation("io.ktor:ktor-client-logging:3.4.1")
 
             // Koin
             implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.2.0"))
@@ -86,6 +88,9 @@ kotlin {
             // Room
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+
+            // commonMain
+            implementation(libs.filekit.dialogs.compose)
         }
 
         iosMain.dependencies {

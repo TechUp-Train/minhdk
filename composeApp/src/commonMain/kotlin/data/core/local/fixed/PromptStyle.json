@@ -1,0 +1,975 @@
+{
+  "categories": [
+    {
+      "category_id": "1001",
+      "category_name": "Sunset Wedding",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/Silhouette_Lovers_a1857733a2.webp",
+      "styles": [
+        {
+          "style_id": "100110",
+          "style_name": "Silhouette Lovers",
+          "image_url": "https://static.apero.vn/content/uploads/Silhouette_Lovers_a1857733a2.webp",
+          "image_prompt": "sunset wedding, bride and groom silhouette holding hands, glowing horizon, dramatic sky, emotional and timeless mood, cinematic realism",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10010",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "wedding",
+          "style_status": true
+        },
+        {
+          "style_id": "10009",
+          "style_name": "Beach Sunset Walk",
+          "image_url": "https://static.apero.vn/content/uploads/Beach_Sunset_Walk_5f448b6073.webp",
+          "image_prompt": "beach sunset wedding, bride and groom holding hands walking by the shore, soft waves, warm sunset glow, airy and romantic feeling",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10011",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "wedding",
+          "style_status": true
+        },
+        {
+          "style_id": "10008",
+          "style_name": "Mountain View Sunset",
+          "image_url": "https://static.apero.vn/content/uploads/Mountain_View_Sunset_aea08e9838.webp",
+          "image_prompt": "sunset wedding in the mountains, bride and groom holding hands, panoramic view, warm fading sunlight, epic and emotional scene",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10012",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "wedding",
+          "style_status": true
+        },
+        {
+          "style_id": "10007",
+          "style_name": "Garden Sunset Romance",
+          "image_url": "https://static.apero.vn/content/uploads/Garden_Sunset_Romance_68e6930df7.webp",
+          "image_prompt": "outdoor garden sunset wedding, bride and groom holding hands, soft sunset light through trees, intimate and dreamy atmosphere",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10013",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "wedding",
+          "style_status": true
+        },
+        {
+          "style_id": "10006",
+          "style_name": "City Rooftop Sunset",
+          "image_url": "https://static.apero.vn/content/uploads/City_Rooftop_Sunset_40563c90a3.webp",
+          "image_prompt": "rooftop sunset wedding, bride and groom holding hands, city skyline at dusk, warm cinematic lighting, modern and elegant style",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10014",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "wedding",
+          "style_status": true
+        },
+        {
+          "style_id": "10005",
+          "style_name": "Countryside Sunset",
+          "image_url": "https://static.apero.vn/content/uploads/Countryside_Sunset_114abbded0.webp",
+          "image_prompt": "countryside sunset wedding, bride and groom holding hands in open field, golden sunset light, peaceful and heartfelt mood",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10015",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "wedding",
+          "style_status": true
+        }
+      ]
+    },
+    {
+      "category_id": "1100",
+      "category_name": "Caricature Trend",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/cartoon_network_thumbnail_632e7722d3.jpg",
+      "styles": [
+        {
+          "style_id": "11000",
+          "style_name": "3D Digital Caricature",
+          "image_url": "https://static.apero.vn/content/uploads/3_D_Digital_Caricature_36c6407f28.jpg",
+          "image_prompt": "Create a 3D digital caricature of me and my job. Pixar-style animation render, glossy texture, exaggerated facial features, big expressive eyes, soft studio lighting, high detail, vibrant colors.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11000",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11001",
+          "style_name": "Street Charcoal Sketch",
+          "image_url": "https://static.apero.vn/content/uploads/Street_Charcoal_Sketch_7a90fbc940.jpg",
+          "image_prompt": "Create a hand-drawn pencil sketch caricature of me and my job. Street artist style, black and white charcoal texture, rough shading, bold pencil strokes, exaggerated head size, white paper background.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11001",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11002",
+          "style_name": "Pop Art Comic",
+          "image_url": "https://static.apero.vn/content/uploads/Pop_Art_Comic_85b50d16eb.jpg",
+          "image_prompt": "Create a Pop Art style caricature of me and my job. Retro comic book look, bold black outlines, halftone dot pattern background, vibrant primary colors, dramatic expression, speech bubble text element.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11002",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11003",
+          "style_name": "Editorial Ink Illustration",
+          "image_url": "https://static.apero.vn/content/uploads/Editorial_Ink_Illustration_225af7299a.jpg",
+          "image_prompt": "Create a political editorial cartoon style caricature of me and my job. Ink line art, cross-hatching shading techniques, satirical vibe, newspaper illustration texture, sharp features.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11003",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11004",
+          "style_name": "Plastic Bobblehead",
+          "image_url": "https://static.apero.vn/content/uploads/Plastic_Bobblehead_065c356c79.jpg",
+          "image_prompt": "Create a realistic caricature of me as a Bobblehead figurine. Plastic toy texture, shiny finish, giant oversized head, tiny body standing on a base, holding props related to my job, studio photography look.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11004",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11005",
+          "style_name": "Claymation Model",
+          "image_url": "https://static.apero.vn/content/uploads/Claymation_Model_86b8c0267f.jpg",
+          "image_prompt": "Create a claymation style caricature of me and my job. Plasticine clay texture, handmade look, fingerprint details, soft focus background, stop-motion animation aesthetic, cute and chunky.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11005",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11006",
+          "style_name": "Urban Graffiti",
+          "image_url": "https://static.apero.vn/content/uploads/Urban_Graffiti_96f2174c8d.jpg",
+          "image_prompt": "Create a graffiti mascot style caricature of me and my job. Street art spray paint texture, thick drips, vibrant urban colors, cartoonish and exaggerated, hip-hop vibe, painted on a brick wall background.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11006",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11007",
+          "style_name": "Cinematic Sticker Hybrid",
+          "image_url": "https://static.apero.vn/content/uploads/Cinematic_Sticker_Hybrid_8941dedf4b.jpg",
+          "image_prompt": "A 3D realistic Caricature (Massive Oversized eyes, Massive Oversized nose, Massive Oversized mouth, Massive Oversized head) illustration of me and my job, exaggerated facial features, bold thick black outline, very heavy black stroke around character and objects, integrated cinematic background, soft global lighting, natural shadows, depth of field, high-contrast colors, sharp edges.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11007",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        },
+        {
+          "style_id": "11008",
+          "style_name": "Neon Cyber-Trend",
+          "image_url": "https://static.apero.vn/content/uploads/Neon_Cyber_Trend_bce4ea9fe5.jpg",
+          "image_prompt": "A 3D realistic Caricature (Massive Oversized eyes, Massive Oversized nose, Massive Oversized mouth, Massive Oversized head) of me and my job. Glowing neon outlines, cyberpunk aesthetic, high-contrast magenta and blue lighting, exaggerated expressions, digital workspace background, sharp cinematic detail.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i11008",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "caricature",
+          "style_status": true
+        }
+      ]
+    },
+    {
+      "category_id": "1002",
+      "category_name": "Birthday",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/Luxury_Birthday_b9e3ae6a65.webp",
+      "styles": [
+        {
+          "style_id": "10026",
+          "style_name": "Luxury Birthday",
+          "image_url": "https://static.apero.vn/content/uploads/Luxury_Birthday_b9e3ae6a65.webp",
+          "image_prompt": "luxury birthday celebration, elegant outfit, premium decorations, soft golden lighting, classy atmosphere, cinematic photography, high-end style",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10020",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "birthday",
+          "style_status": false
+        },
+        {
+          "style_id": "10025",
+          "style_name": "Rose Surprise",
+          "image_url": "https://static.apero.vn/content/uploads/Rose_Surprise_a5696fd0aa.webp",
+          "image_prompt": "birthday surprise with roses, romantic setup, soft warm light, emotional moment, elegant and intimate mood, realistic photography",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10021",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "birthday",
+          "style_status": true
+        },
+        {
+          "style_id": "10024",
+          "style_name": "Cozy Home Birthday",
+          "image_url": "https://static.apero.vn/content/uploads/Cozy_Home_Birthday_a89fc37ae0.webp",
+          "image_prompt": "cozy birthday celebration at home, warm indoor lighting, natural smiles, intimate and joyful atmosphere, lifestyle photography",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10022",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "birthday",
+          "style_status": true
+        },
+        {
+          "style_id": "10023",
+          "style_name": "Outdoor Birthday Party",
+          "image_url": "https://static.apero.vn/content/uploads/Outdoor_Birthday_Party_cdc26cee91.webp",
+          "image_prompt": "outdoor birthday party, natural daylight, balloons and decorations, cheerful mood, candid moments, vibrant and happy atmosphere",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10023",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "birthday",
+          "style_status": true
+        },
+        {
+          "style_id": "10022",
+          "style_name": "Cake & Candle Moment",
+          "image_url": "https://static.apero.vn/content/uploads/Cake_and_Candle_Moment_465b0e16e5.webp",
+          "image_prompt": "birthday cake with candles, close emotional moment, soft glow from candlelight, warm tones, cinematic and heartfelt feeling",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10024",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "birthday",
+          "style_status": true
+        },
+        {
+          "style_id": "10021",
+          "style_name": "Minimal Aesthetic Birthday",
+          "image_url": "https://static.apero.vn/content/uploads/Minimal_Aesthetic_Birthday_f6bc0c8810.webp",
+          "image_prompt": "minimal aesthetic birthday, clean background, soft neutral colors, simple decorations, calm and elegant mood, modern photography style",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10025",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "birthday",
+          "style_status": true
+        },
+        {
+          "style_id": "10020",
+          "style_name": "Night Birthday Celebration",
+          "image_url": "https://static.apero.vn/content/uploads/Night_Birthday_Celebration_38ac9ebbdd.webp",
+          "image_prompt": "night birthday celebration, city lights or dark background, warm ambient lighting, stylish and modern vibe, cinematic realism",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10026",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "birthday",
+          "style_status": true
+        }
+      ]
+    },
+    {
+      "category_id": "1003",
+      "category_name": "Pets Photoshoot",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/At_Home_Cozy_844df01fc5.webp",
+      "styles": [
+        {
+          "style_id": "10030",
+          "style_name": "At Home Cozy",
+          "image_url": "https://static.apero.vn/content/uploads/At_Home_Cozy_844df01fc5.webp",
+          "image_prompt": "pet photoshoot at home, cozy indoor environment, soft natural light, owner sitting close with pet, warm and intimate atmosphere, realistic photography",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10030",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "pet",
+          "style_status": true
+        },
+        {
+          "style_id": "10031",
+          "style_name": "Paved Road Walk",
+          "image_url": "https://static.apero.vn/content/uploads/Paved_Road_Walk_552303abec.webp",
+          "image_prompt": "pet photoshoot on paved road, owner walking pet on leash, natural daylight, urban lifestyle vibe, candid motion shot, realistic street photography",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10031",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "pet",
+          "style_status": true
+        },
+        {
+          "style_id": "10032",
+          "style_name": "Playful Action",
+          "image_url": "https://static.apero.vn/content/uploads/Playful_Action_bc88cbeb6f.webp",
+          "image_prompt": "playful pet photoshoot, owner playing with pet, dynamic movement, joyful expressions, outdoor background, vibrant and energetic atmosphere",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10032",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "pet",
+          "style_status": true
+        },
+        {
+          "style_id": "10033",
+          "style_name": "Minimal Portrait",
+          "image_url": "https://static.apero.vn/content/uploads/Minimal_Portrait_cf8f267381.webp",
+          "image_prompt": "minimal pet portrait, clean background, owner holding pet gently, soft studio lighting, focus on facial expression, modern and aesthetic style",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10033",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "pet",
+          "style_status": true
+        },
+        {
+          "style_id": "10028",
+          "style_name": "Outdoor Nature Bond",
+          "image_url": "https://static.apero.vn/content/uploads/Outdoor_Nature_Bond_e3459aa2b2.webp",
+          "image_prompt": "outdoor pet photoshoot, owner sitting on grass with pet, natural greenery background, soft sunlight, peaceful and emotional bonding moment",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10034",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "pet",
+          "style_status": true
+        },
+        {
+          "style_id": "10029",
+          "style_name": "Face to Face Hug",
+          "image_url": "https://static.apero.vn/content/uploads/Face_to_Face_Hug_b69a1ad6a9.webp",
+          "image_prompt": "pet photoshoot, owner hugging pet face to face, close-up composition, emotional warmth, soft lighting, strong bond and affection",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10035",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "pet",
+          "style_status": true
+        }
+      ]
+    },
+    {
+      "category_id": "1004",
+      "category_name": "Rose Photoshoot",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/White_Cube_Roses_3be3efdd80.webp",
+      "styles": [
+        {
+          "style_id": "10040",
+          "style_name": "White Cube Roses",
+          "image_url": "https://static.apero.vn/content/uploads/White_Cube_Roses_3be3efdd80.webp",
+          "image_prompt": "Subject holding roses inside a white cube studio, minimalistic composition, soft shadow, clean high-end aesthetic",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10040",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "rose",
+          "style_status": true
+        },
+        {
+          "style_id": "10041",
+          "style_name": "Black Boots & Roses",
+          "image_url": "https://static.apero.vn/content/uploads/Black_Boots_and_Roses_7ac4aecf99.webp",
+          "image_prompt": "Subject wearing black boots, holding red roses, confident pose, modern fashion editorial style",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10041",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "rose",
+          "style_status": true
+        },
+        {
+          "style_id": "10042",
+          "style_name": "Black Chair Elegance",
+          "image_url": "https://static.apero.vn/content/uploads/Black_Chair_Elegance_0e81928a70.webp",
+          "image_prompt": "Subject sitting on a black chair with roses, dramatic lighting, strong contrast, elegant portrait",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10042",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "rose",
+          "style_status": true
+        },
+        {
+          "style_id": "10043",
+          "style_name": "Roses on Floor",
+          "image_url": "https://static.apero.vn/content/uploads/Roses_on_Floor_6e261c4217.webp",
+          "image_prompt": "Subject surrounded by scattered roses on the floor, relaxed pose, artistic composition, soft light",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10043",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "rose",
+          "style_status": false
+        },
+        {
+          "style_id": "10044",
+          "style_name": "Rose Close-up Portrait",
+          "image_url": "https://static.apero.vn/content/uploads/Rose_Close_up_Portrait_2a015637bc.webp",
+          "image_prompt": "Close-up portrait with roses framing the face, shallow depth of field, intimate and refined mood",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10044",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "rose",
+          "style_status": true
+        },
+        {
+          "style_id": "10045",
+          "style_name": "Standing with Roses",
+          "image_url": "https://static.apero.vn/content/uploads/Standing_with_Roses_e378b1c5a1.webp",
+          "image_prompt": "Full-body pose holding roses, neutral background, fashion-forward posture, balanced lighting",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10045",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "rose",
+          "style_status": false
+        },
+        {
+          "style_id": "10046",
+          "style_name": "Roses & Shadow Play",
+          "image_url": "https://static.apero.vn/content/uploads/Roses_and_Shadow_Play_b8dd113c7f.webp",
+          "image_prompt": "Roses casting shadows on the wall, subject interacting with light and shadow, artistic minimalism",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10046",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "rose",
+          "style_status": true
+        }
+      ]
+    },
+    {
+      "category_id": "1005",
+      "category_name": "Painting",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/Facing_Myself_be3afbc5af.webp",
+      "styles": [
+        {
+          "style_id": "10050",
+          "style_name": "Facing Myself",
+          "image_url": "https://static.apero.vn/content/uploads/Facing_Myself_be3afbc5af.webp",
+          "image_prompt": "A person standing in front of a painted version of themselves, reflective expression, artistic indoor setting, symbolic mood",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10050",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "painting",
+          "style_status": true
+        },
+        {
+          "style_id": "10051",
+          "style_name": "Canvas Reflection",
+          "image_url": "https://static.apero.vn/content/uploads/Canvas_Reflection_18bc561464.webp",
+          "image_prompt": "Subject looking at a large canvas portrait of themselves, soft studio light, introspective atmosphere",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10051",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "painting",
+          "style_status": true
+        },
+        {
+          "style_id": "10052",
+          "style_name": "Abstract Identity",
+          "image_url": "https://static.apero.vn/content/uploads/Abstract_Identity_1c7b206742.webp",
+          "image_prompt": "Painted abstract shapes blending with the subject’s face, artistic identity exploration, creative composition",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10052",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "painting",
+          "style_status": true
+        },
+        {
+          "style_id": "10053",
+          "style_name": "Brushstroke Overlay",
+          "image_url": "https://static.apero.vn/content/uploads/Brushstroke_Overlay_72c9f8b0a3.webp",
+          "image_prompt": "Realistic portrait with visible brushstroke textures layered over the image, painterly realism",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10053",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "painting",
+          "style_status": false
+        },
+        {
+          "style_id": "10054",
+          "style_name": "Gallery Encounter",
+          "image_url": "https://static.apero.vn/content/uploads/Gallery_Encounter_5d5705b275.webp",
+          "image_prompt": "Subject standing inside an art gallery, facing their own painting on the wall, cinematic framing",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10054",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "painting",
+          "style_status": true
+        },
+        {
+          "style_id": "10055",
+          "style_name": "Color Emotion Split",
+          "image_url": "https://static.apero.vn/content/uploads/Color_Emotion_Split_fc8dc2448d.webp",
+          "image_prompt": "Half of the subject realistic, half painted in emotional colors, symbolic and expressive style",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_t2i10055",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "painting",
+          "style_status": true
+        }
+      ]
+    },
+    {
+      "category_id": "1000",
+      "category_name": "Trending Now",
+      "category_thumbnail": "https://static.apero.vna/content/uploads/change_hairstyle_thumbnail_d351736b3b.jpg",
+      "styles": [
+        {
+          "style_id": "1000",
+          "style_name": "Baby Cute",
+          "image_url": "https://static.apero.vn/content/uploads/Baby_918939fa3b.webp",
+          "image_prompt": "Animate the uploaded baby photo into a funny dance video synced to music.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i1000",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "trending",
+          "style_status": true
+        },
+        {
+          "style_id": "999",
+          "style_name": "",
+          "image_url": "https://static.apero.vn/content/uploads/Gemini_Generated_Image_h8adj8h8adj8h8ad_d72edb022e.png",
+          "image_prompt": "Animate the uploaded pet photo into a humorous dancing video synced to music.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i999",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "",
+          "style_status": true
+        },
+        {
+          "style_id": "998",
+          "style_name": "Rainbow Bridge Farewell",
+          "image_url": "https://static.apero.vn/content/uploads/p_E2h_Tv_N8_CY_3m_Sv9lni_v5_1_e8fa871320_144ba99872.png",
+          "image_prompt": "Peaceful cinematic farewell across clouds and rainbow bridge.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i998",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "",
+          "style_status": true
+        },
+        {
+          "style_id": "997",
+          "style_name": "Venezuela Sunset",
+          "image_url": "https://static.apero.vn/content/uploads/rudyrodriguezoficial_720_P_frame_at_0m8s_7223c62fc0.jpg",
+          "image_prompt": "Transform the person in the input image into the same person, preserving facial features, body shape, skin tone, and identity with high accuracy. Full body, cinematic golden hour sunset, Venezuelan urban street, ultra realistic.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i997",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "hot",
+          "style_status": true
+        }
+      ]
+    },
+    {
+      "category_id": "999",
+      "category_name": "Happy Festival",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/change_hairstyle_thumbnail_d351736b3b.jpg",
+      "styles": [
+        {
+          "style_id": "998",
+          "style_name": "Festival Aesthetic",
+          "image_url": "https://static.apero.vn/content/uploads/Festival_Aesthetic_187934dda7.png",
+          "image_prompt": "Hyper-realistic Festival Aesthetic",
+          "image_limit": 1,
+          "style_event": "img_gen_i2i998",
+          "style_tag": "",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "997",
+          "style_name": "Grace of the Festival",
+          "image_url": "https://static.apero.vn/content/uploads/Grace_of_the_Festival_Light_THUMBNAIL_ecfe808853.jpeg",
+          "image_prompt": "Hyper-realistic Grace of the Festival",
+          "image_limit": 1,
+          "style_event": "img_gen_i2i998",
+          "style_tag": "",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "995",
+          "style_name": "Christmas Snow Globe",
+          "image_url": "https://static.apero.vn/content/uploads/Gemini_Generated_Image_75mvxb75mvxb75mv_ed73e70822.png",
+          "image_prompt": "Hyper-realistic Christmas snow globe scene held by Santa.",
+          "image_limit": 1,
+          "style_event": "img_gen_i2i995",
+          "style_tag": "",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "994",
+          "style_name": "Ethiopian Flag Aesthetic",
+          "image_url": "https://static.apero.vn/content/uploads/h_6cb696427b.png",
+          "image_prompt": "Photorealistic Ethiopian flag lifestyle portrait.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i994",
+          "style_tag": "hot",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "993",
+          "style_name": "Happy Karwa Chauth Couple",
+          "image_url": "https://static.apero.vn/content/uploads/Karwa_Chauth_Couple_1_2_fad3208930.png",
+          "image_prompt": "Ultra realistic Indian festival couple portrait.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i993",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "",
+          "style_status": true
+        },
+        {
+          "style_id": "992",
+          "style_name": "Karwa Chauth Beauty",
+          "image_url": "https://static.apero.vn/content/uploads/Karwa_Chauth_Girl_Prompt_1_95f7c52f52.jpeg",
+          "image_prompt": "High-quality cinematic Karwa Chauth portrait.",
+          "image_limit": 1,
+          "style_premium": true,
+          "style_event": "img_gen_i2i992",
+          "style_tag": "",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        }
+      ]
+    },
+    {
+      "category_id": "995",
+      "category_name": "Beauty",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/change_hairstyle_thumbnail_d351736b3b.jpg",
+      "styles": [
+        {
+          "style_id": "992",
+          "style_name": "Girl purple smoke",
+          "image_url": "https://static.apero.vn/content/uploads/Gemini_Generated_Image_384ee7384ee7384e_1_836a24969d.png",
+          "image_prompt": "A cinematic portrait of a girl emerging from purple smoke, ethereal and mysterious mood.Glowing violet mist, dramatic lighting, soft highlights and shadows. Editorial fashion photography, modern fantasy style, ultra realistic, sharp focus. Portrait orientation. ",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i991",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "991",
+          "style_name": "Chefchaouen Blue Street",
+          "image_url": "https://static.apero.vn/content/uploads/Gemini_Generated_Image_384ee7384ee7384e_1_836a24969d.png",
+          "image_prompt": "Photorealistic Moroccan blue street fashion portrait.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i991",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "990",
+          "style_name": "Makeup Filter",
+          "image_url": "https://static.apero.vn/content/uploads/split_makeup_portrait_832x1248_61d797d708.png",
+          "image_prompt": "",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_990",
+          "style_tag": "trending",
+          "style_status": true
+        },
+        {
+          "style_id": "989",
+          "style_name": "Flower Girl",
+          "image_url": "https://static.apero.vn/content/uploads/flower_d17cda25f5.png",
+          "image_prompt": "Dark luxury black evening dress portrait.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_989",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        }
+      ]
+    },
+    {
+      "category_id": "996",
+      "category_name": "Modern Style",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/change_hairstyle_thumbnail_d351736b3b.jpg",
+      "styles": [
+        {
+          "style_id": "987",
+          "style_name": "Birthday Photoshoot",
+          "image_url": "https://static.apero.vn/content/uploads/birthday_3c783e71e9.png",
+          "image_prompt": "Luxury birthday photoshoot with pink theme.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i987",
+          "style_tag": "trending",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "986",
+          "style_name": "BMW Boy",
+          "image_url": "https://static.apero.vn/content/uploads/bmw_8a26a6a47c.png",
+          "image_prompt": "Ultra realistic BMW luxury lifestyle portrait.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i986",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "985",
+          "style_name": "Sunset Photoshoot",
+          "image_url": "https://static.apero.vn/content/uploads/sunset_504e3ba89d.png",
+          "image_prompt": "Romantic cinematic beach sunset portrait.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i985",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "984",
+          "style_name": "Hong Kong Mood",
+          "image_url": "https://static.apero.vn/content/uploads/hongkong_1dd745bc7f.png",
+          "image_prompt": "Wong Kar-wai cinematic neon portrait.",
+          "image_limit": 1,
+          "style_premium": true,
+          "style_event": "img_gen_i2i984",
+          "style_tag": "trending",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "983",
+          "style_name": "Blurry Girl",
+          "image_url": "https://static.apero.vn/content/uploads/blurry_ec15c90702.png",
+          "image_prompt": "Dreamy blurry vintage car window portrait.",
+          "image_limit": 1,
+          "style_premium": true,
+          "style_event": "img_gen_19",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "982",
+          "style_name": "Diwali Man",
+          "image_url": "https://static.apero.vn/content/uploads/Gemini_Generated_Image_onjcb9onjcb9onjc_419bb5e284.png",
+          "image_prompt": "Golden hour by the Ganga: young man (26-30) in maroon open-collar kurta, rolled-up sleeves, dhoti, Birkenstocks, bold glasses, luxury watch-sits relaxed on an old staircase under a sprawling banyan tree, bouquet by his side. Iconic Howrah Bridge and moody river reflections behind. Low-angle, cinematic portrait, sharp 8K detail, shallow depth, dramatic golden lighting, natural color grading.",
+          "image_limit": 1,
+          "style_premium": true,
+          "style_event": "img_gen_",
+          "style_tag": "trending",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        }
+      ]
+    },
+    {
+      "category_id": "998",
+      "category_name": "Romantic & Emotional",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/Romantic_and_Emotional_f5890895e4.png",
+      "styles": [
+        {
+          "style_id": "9951",
+          "style_name": "Golden Hug",
+          "image_url": "https://static.apero.vn/content/uploads/Golden_Hug_c2058d19c2.png",
+          "image_prompt": "same people, emotional hug at golden sunset, cinematic lighting, full-body couple portrait, vertical composition, 1024x1536",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i9951",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "9952",
+          "style_name": "Wedding Memory",
+          "image_url": "https://static.apero.vn/content/uploads/Wedding_Memory_2cb1961e8f.png",
+          "image_prompt": "same couple, elegant wedding memory scene, soft cinematic light, romantic mood, portrait orientation, 1024x1536",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i9952",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "9953",
+          "style_name": "Long Distance Love",
+          "image_url": "https://static.apero.vn/content/uploads/Long_Distance_Love_0abc0ed854.png",
+          "image_prompt": "same person, emotional waiting scene by window, sunset light, cinematic loneliness, vertical portrait, 1024x1536",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i9953",
+          "style_tag": "",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "9954",
+          "style_name": "Proposal Moment",
+          "image_url": "https://static.apero.vn/content/uploads/Proposal_Moment_98e205efda.png",
+          "image_prompt": "same couple, surprise proposal scene, joyful cinematic emotion, golden hour, full-body portrait, 1024x1536",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i9954",
+          "style_tag": "",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "9955",
+          "style_name": "Soulmate Gaze",
+          "image_url": "https://static.apero.vn/content/uploads/Soulmate_Gaze_0e3af600c7.png",
+          "image_prompt": "same couple, intimate eye contact, emotional close-up, cinematic softness, portrait orientation, 1024x1536",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_i2i9955",
+          "style_tag": "",
+          "style_status": false,
+          "style_mode": "IMAGE_EDITING"
+        }
+      ]
+    },
+    {
+      "category_id": "994",
+      "category_name": "Hair Style",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/category_hair_style.png",
+      "styles": [
+        {
+          "style_id": "99401",
+          "style_name": "Bob Cut",
+          "image_url": "https://static.apero.vn/content/uploads/style_bob_cut_4dfe42a4c1.webp",
+          "image_prompt": "A detailed portrait of a model with a short straight bob cut; smooth and sleek with clean edges and even layers; natural hair color under natural lighting showcasing professional styling. Fixhand, masterpiece, best quality, realistic.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_99401",
+          "style_tag": "Trending",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "99402",
+          "style_name": "Pixie Cut",
+          "image_url": "https://static.apero.vn/content/uploads/style_pixie_cut_ce3f18b95d.webp",
+          "image_prompt": "A close-up image featuring a model with a short cropped pixie cut; textured and tousled with choppy layers; edgy and modern look highlighted under soft lighting. Fixhand, masterpiece, best quality, realistic.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_99402",
+          "style_tag": "Trending",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "99403",
+          "style_name": "Under Cut",
+          "image_url": "https://static.apero.vn/content/uploads/style_under_cut_0e3473d050.webp",
+          "image_prompt": "Realistic portrait of a young man with a modern undercut fade haircut, slicked back textured top, clean sharp hairline, light stubble beard, handsome face, studio lighting, neutral gray background, professional photography, ultra realistic, high quality.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_99403",
+          "style_tag": "Trending,Man",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        },
+        {
+          "style_id": "99404",
+          "style_name": "Beach Waves",
+          "image_url": "https://static.apero.vn/content/uploads/style_beach_waves_bdbb074db9.webp",
+          "image_prompt": "Realistic portrait of a beautiful woman with long blonde beach wave hairstyle, soft natural waves, side part, sun-kissed highlights, clear skin, soft makeup, natural lighting, professional photography, ultra realistic.",
+          "image_limit": 1,
+          "style_premium": false,
+          "style_event": "img_gen_99404",
+          "style_tag": "",
+          "style_status": true,
+          "style_mode": "IMAGE_EDITING"
+        }
+      ]
+    },
+    {
+      "category_id": "993",
+      "category_name": "AI Makeup Editing",
+      "category_thumbnail": "https://static.apero.vn/content/uploads/change_hairstyle_thumbnail_d351736b3b.jpg",
+      "styles": [
+        {
+          "style_id": "982",
+          "style_name": "Soft Natural Makeup",
+          "image_url": "https://static.apero.vn/content/uploads/Soft_Natural_Makeup_7deba6d9ac.webp",
+          "image_prompt": "Apply soft natural makeup to the face while preserving the person's identity, facial structure, skin tone, lighting, and background. Makeup includes light foundation, subtle blush, natural eyebrow shaping, soft nude eyeshadow, thin eyeliner, and natural pink lips.",
+          "style_premium": false,
+          "style_event": "img_gen_i2i982",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "trending",
+          "style_status": true
+        },
+        {
+          "style_id": "981",
+          "style_name": "Korean Glass Skin",
+          "image_url": "https://static.apero.vn/content/uploads/Korean_Glass_Skin_1aed3aa90e.webp",
+          "image_prompt": "Enhance the face with Korean glass skin makeup style. Keep facial identity unchanged. Dewy luminous skin, smooth texture, light pink blush, soft eyebrows, minimal eyeshadow, glossy natural lips.",
+          "style_premium": false,
+          "style_event": "img_gen_i2i981",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "hot",
+          "style_status": true
+        },
+        {
+          "style_id": "980",
+          "style_name": "Bold Glam Makeup",
+          "image_url": "https://static.apero.vn/content/uploads/Bold_Glam_Makeup_105401dc80.webp",
+          "image_prompt": "Apply bold glam makeup while keeping the original face identity intact. Full-coverage foundation, sharp contour, dramatic eyeshadow, eyeliner, long lashes, and bold lipstick. Editorial fashion look.",
+          "style_premium": true,
+          "style_event": "img_gen_i2i980",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "trending",
+          "style_status": true
+        },
+        {
+          "style_id": "979",
+          "style_name": "Clean No-Makeup Look",
+          "image_url": "https://static.apero.vn/content/uploads/Screenshot_7_626cae2eb1.png",
+          "image_prompt": "Enhance the face with a clean no-makeup makeup look. Very light base, even skin tone, minimal correction, natural brows, soft lip tint. Should look realistic and makeup-free.",
+          "style_premium": false,
+          "style_event": "img_gen_i2i979",
+          "style_mode": "IMAGE_EDITING",
+          "style_tag": "",
+          "style_status": true
+        }
+      ]
+    }
+  ]
+}
