@@ -2,8 +2,10 @@ package com.example.aigenerator
 
 import android.Manifest
 import android.content.ContentUris
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.size
@@ -17,14 +19,17 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
+import data.model.Categories
 import di.networkModule
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import kotlin.coroutines.resume
+import androidx.core.net.toUri
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -132,4 +137,28 @@ private fun createPermissionLauncher(permission: MultiPlatformPermission): Permi
         }
 
     }
+}
+
+actual suspend fun readStyles(context: MultiPlatformContext): Categories = withContext(Dispatchers.IO) {
+    val jsonString = context.assets.open("Styles.json")
+        .bufferedReader()
+        .use { it.readText() }
+    Json.decodeFromString<Categories>(jsonString)
+}
+
+actual fun getSecretKeys(): List<String> {
+    return listOf(
+        BuildConfig.API_KEY,
+        BuildConfig.PUBLIC_KEY
+    )
+}
+
+actual fun getDeviceId(): String {
+    return ""
+}
+
+actual suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): ByteArray? {
+    val uri = this.toUri()
+    val inputStream = context.contentResolver.openInputStream(uri)
+    return inputStream?.readBytes() ?: ByteArray(0)
 }

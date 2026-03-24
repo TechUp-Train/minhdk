@@ -56,7 +56,7 @@ val networkModule = module {
     }
 
     single<ImageService> {
-        ImageServiceImpl(client = get(), baseHost = "api.github.com")
+        ImageServiceImpl(client = get(), baseHost = "api-img-gen-wrapper.aperogroup.ai")
     }
 
 }

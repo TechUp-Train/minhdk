@@ -11,21 +11,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.UIKitView
 import coil3.PlatformContext
+import data.model.Categories
 import di.networkModule
+import io.github.vinceglb.filekit.utils.toByteArray
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.memScoped
+import kotlinx.cinterop.refTo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import platform.CoreGraphics.CGSize
 import platform.CoreGraphics.CGSizeMake
+import platform.Foundation.NSBundle
+import platform.Foundation.NSData
+import platform.Foundation.NSDictionary
+import platform.Foundation.NSMutableData
 import platform.Foundation.NSSortDescriptor
+import platform.Foundation.NSString
+import platform.Foundation.NSUTF8StringEncoding
+import platform.Foundation.appendData
+import platform.Foundation.dictionaryWithContentsOfFile
+import platform.Foundation.getBytes
+import platform.Foundation.stringWithContentsOfFile
 import platform.Photos.PHAsset
 import platform.Photos.PHAssetMediaTypeImage
+import platform.Photos.PHAssetResource
+import platform.Photos.PHAssetResourceManager
 import platform.Photos.PHAuthorizationStatusAuthorized
 import platform.Photos.PHAuthorizationStatusLimited
 import platform.Photos.PHFetchOptions
@@ -33,6 +50,7 @@ import platform.Photos.PHFetchResult
 import platform.Photos.PHImageContentModeAspectFill
 import platform.Photos.PHImageManager
 import platform.Photos.PHImageRequestOptions
+import platform.Photos.PHImageRequestOptionsDeliveryMode
 import platform.Photos.PHImageRequestOptionsDeliveryModeHighQualityFormat
 import platform.Photos.PHImageRequestOptionsResizeModeFast
 import platform.Photos.PHPhotoLibrary
@@ -41,6 +59,7 @@ import platform.UIKit.UIImage
 import platform.UIKit.UIImageView
 import platform.UIKit.UIViewContentMode
 import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class IOSPlatform : Platform {
     override val name: String =
@@ -164,4 +183,53 @@ actual fun rememberPermissionLauncher(permission: MultiPlatformPermission): Perm
             }
         )
     }.value
+}
+
+@OptIn(ExperimentalForeignApi::class)
+actual suspend fun readStyles(context: MultiPlatformContext): Categories = withContext(Dispatchers.Default) {
+    val path = NSBundle.mainBundle.pathForResource("PromptStyle", "json")
+        ?: throw IllegalStateException("PromptStyle.json not found in bundle")
+    val jsonString = NSString.stringWithContentsOfFile(path, encoding = NSUTF8StringEncoding, error = null) as String
+    Json.decodeFromString<Categories>(jsonString)
+}
+
+actual fun getSecretKeys(): List<String> {
+    val path = NSBundle.mainBundle.pathForResource(
+        name = "Secrets", ofType = "plist"
+    ) ?: return emptyList()
+
+    val dict = NSDictionary.dictionaryWithContentsOfFile(path) ?: return emptyList()
+
+    val apiKey = dict["API_KEY"] as? String ?: ""
+    val publicKey = dict["PUBLIC_KEY"] as? String ?: ""
+    return listOf(apiKey, publicKey)
+}
+
+actual fun getDeviceId(): String {
+    return ""
+}
+
+@OptIn(ExperimentalForeignApi::class)
+actual suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): ByteArray? {
+    return toByteArray()
+}
+
+@OptIn(ExperimentalForeignApi::class)
+suspend fun PHAsset.toByteArray(): ByteArray? = suspendCancellableCoroutine { continuation ->
+    val manager = PHImageManager.defaultManager()
+    val options = PHImageRequestOptions().apply {
+        deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat
+        isSynchronous()
+    }
+
+    manager.requestImageDataAndOrientationForAsset(
+        asset = this,
+        options = options
+    ) { data, _, _, _ ->
+        if (data != null) {
+            continuation.resume(data.toByteArray())
+        } else {
+            continuation.resume(null)
+        }
+    }
 }

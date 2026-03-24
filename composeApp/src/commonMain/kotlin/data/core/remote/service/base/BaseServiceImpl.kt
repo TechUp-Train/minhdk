@@ -11,13 +11,20 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
+import io.ktor.http.Url
+import io.ktor.http.contentType
+import io.ktor.http.fullPath
 import io.ktor.http.path
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlin.collections.iterator
 
@@ -55,18 +62,29 @@ open class BaseServiceImpl(
             Method.OPTIONS -> options { config(this) }
         }
         val raw = response.bodyAsText()
+        if(serializer == Unit.serializer()) return Unit as T
         return json.decodeFromString(serializer, raw)
     }
 
-    override fun HttpRequestBuilder.path(subDomain: String, vararg values: String) {
+    private fun HttpRequestBuilder.build(mProtocol: URLProtocol = URLProtocol.HTTPS, mHost: String, subDomain: String) {
         url { urlBuilder ->
-            protocol = URLProtocol.HTTPS
-            host = baseHost
-            urlBuilder.path(subDomain.mappingPath(*values))
+            protocol = mProtocol
+            host = mHost
+            urlBuilder.path(subDomain)
         }
     }
 
-    override fun HttpRequestBuilder.header(headers: Map<String, String>) {
+    override fun HttpRequestBuilder.fullUrl(url: String) {
+//        val url = Url(url)
+//        build(mHost = url.host, subDomain = url.fullPath)
+        url(url)
+    }
+
+    override fun HttpRequestBuilder.path(subDomain: String, vararg values: String) {
+        build(mHost = baseHost, subDomain = subDomain.mappingPath(*values))
+    }
+
+    override fun HttpRequestBuilder.header(headers: Map<String, Any>) {
         (provideStableHeader() + headers).forEach { (key, value) ->
             header(key, value)
         }
@@ -76,6 +94,11 @@ open class BaseServiceImpl(
         for ((key, value) in params) {
             parameter(key, value)
         }
+    }
+
+    override fun HttpRequestBuilder.body(body: Any, type: ContentType) {
+        setBody(body)
+        contentType(type)
     }
 
     override suspend fun <T> request(method: Method, serializer: KSerializer<T>, config: HttpRequestBuilder.() -> Unit): Response<T> =

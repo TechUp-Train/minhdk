@@ -1,6 +1,7 @@
 import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -117,17 +118,35 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        // build api key
+        val localProps = rootProject.file("local.properties")
+        val props = Properties()
+        if (localProps.exists()) {
+            props.load(localProps.inputStream())
+        }
+        val apiKey = props.getProperty("API_KEY") ?: ""
+        val publicKey = props.getProperty("PUBLIC_KEY") ?: ""
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "PUBLIC_KEY", "\"$publicKey\"")
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
         }
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

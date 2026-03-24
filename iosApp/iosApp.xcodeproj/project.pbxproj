@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		63784E822F723B3C00B27466 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63784E812F723B3C00B27466 /* Secrets.plist */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		63784E812F723B3C00B27466 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Secrets.plist; path = ../composeApp/src/iosMain/resources/Secrets.plist; sourceTree = "<group>"; };
 		CB3876D97AEE8D86C3FD8C06 /* AiGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AiGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -50,6 +55,7 @@
 		572F9072D1620466F24CA117 = {
 			isa = PBXGroup;
 			children = (
+				63784E812F723B3C00B27466 /* Secrets.plist */,
 				E02DEDC35FC47BB29BAA74B2 /* Configuration */,
 				F86977FD0DD18A023F61735A /* iosApp */,
 				8167FF1D1E9C2A11B1CD69B7 /* Products */,
@@ -131,6 +137,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63784E822F723B3C00B27466 /* Secrets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
