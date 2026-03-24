@@ -9,7 +9,6 @@ data class Categories(
     val categories: List<Category>
 )
 
-
 @Serializable
 data class Category(
     @SerialName("category_id")
