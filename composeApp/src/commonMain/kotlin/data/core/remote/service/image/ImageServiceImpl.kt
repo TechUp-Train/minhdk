@@ -6,7 +6,8 @@ import data.core.remote.service.base.BaseServiceImpl
 import data.core.remote.service.base.Method
 import data.core.remote.service.base.Response
 import data.model.PresignLink
-import data.model.Prompt
+import data.model.PromptRequest
+import data.model.PromptResponse
 import data.model.Timestamp
 import io.ktor.client.HttpClient
 import io.ktor.http.ContentType
@@ -65,7 +66,7 @@ class ImageServiceImpl(
         }
     }
 
-    override suspend fun requestTimestamp(): Response<Timestamp> {
+    private suspend fun requestTimestamp(): Response<Timestamp> {
         var timestamp: Long
         val signature = when (val res = generateSignature(Clock.System.now().epochSeconds)) {
             is Response.Success -> {
@@ -102,7 +103,7 @@ class ImageServiceImpl(
         return request(timestamp.toString(), signature)
     }
 
-    override suspend fun getPresignLink(): Response<PresignLink> {
+    private suspend fun getPresignLink(): Response<PresignLink> {
         return requestWithKeys { timestamp, signature ->
             request(Method.GET, PresignLink.serializer()) {
                 path("api/v5.1/qwen-editing/presigned-link")
@@ -116,7 +117,7 @@ class ImageServiceImpl(
         }
     }
 
-    override suspend fun uploadImageToCloud(image: ByteArray): Response<String> {
+    private suspend fun uploadImageToCloud(image: ByteArray): Response<String> {
         val uploadInfo = when (val res = getPresignLink()) {
             is Response.Success -> res.data.data ?: run {
                 return Response.Error(null, "Upload link is null!")
@@ -149,7 +150,7 @@ class ImageServiceImpl(
         images: List<ByteArray>,
         mode: String,
         prompt: String
-    ): Response<String> {
+    ): Response<PromptResponse> {
         val files = mutableListOf<String>()
         images.forEach { image ->
             val placeHolder = when (val res = uploadImageToCloud(image)) {
@@ -161,9 +162,9 @@ class ImageServiceImpl(
             }
             files.add(placeHolder)
         }
-        val prompt = Prompt(files, mode, prompt)
+        val prompt = PromptRequest(files, mode, prompt)
         return requestWithKeys { timestamp, signature ->
-            request(Method.POST, String.serializer()) {
+            request(Method.POST, PromptResponse.serializer()) {
                 path("/api/v5.1/qwen-editing")
                 header(
                     mapOf(
@@ -172,7 +173,7 @@ class ImageServiceImpl(
                     )
                 )
                 body(
-                    Json.encodeToString(Prompt.serializer(), prompt),
+                    Json.encodeToString(PromptRequest.serializer(), prompt),
                     ContentType.Application.Json
                 )
             }

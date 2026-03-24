@@ -80,7 +80,7 @@ fun App(context: MultiPlatformContext) {
                                 "Combine them then send me a funny image."
                             )
                             when (res) {
-                                is Response.Success -> println("success")
+                                is Response.Success -> println("success: ${res.data.data?.url}")
                                 else -> println("error")
                             }
                         }
