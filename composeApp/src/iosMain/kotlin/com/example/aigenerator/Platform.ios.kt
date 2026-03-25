@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.UIKitView
 import coil3.PlatformContext
 import data.model.Categories
+import di.appModule
 import di.networkModule
 import io.github.vinceglb.filekit.utils.toByteArray
 import io.ktor.client.engine.HttpClientEngineFactory
@@ -20,11 +21,13 @@ import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.refTo
+import kotlinx.cinterop.useContents
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import platform.CoreGraphics.CGSize
 import platform.CoreGraphics.CGSizeMake
@@ -57,7 +60,9 @@ import platform.Photos.PHPhotoLibrary
 import platform.UIKit.UIDevice
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageView
+import platform.UIKit.UIScreen
 import platform.UIKit.UIViewContentMode
+import platform.darwin.unw_proc_info_t
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -82,9 +87,10 @@ actual fun provideNetworkEngine(): HttpClientEngineFactory<*> {
     return Darwin
 }
 
-actual fun initDependencies() {
+actual fun initDependencies(config: KoinApplication.() -> Unit) {
     startKoin {
-        modules(networkModule)
+        config()
+        modules(networkModule, appModule)
     }
 }
 
@@ -145,7 +151,10 @@ actual suspend fun loadLocalImage(context: MultiPlatformContext): List<PlatformI
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun PlatformImage(image: PlatformImage?) {
+actual fun PlatformImage(
+    modifier: Modifier,
+    image: PlatformImage?
+) {
 
     var data by remember { mutableStateOf<UIImage?>(null) }
 
@@ -163,7 +172,7 @@ actual fun PlatformImage(image: PlatformImage?) {
         update = { view ->
             view.image = data
         },
-        modifier = Modifier.size(300.dp)
+        modifier = modifier
     )
 }
 
@@ -186,7 +195,7 @@ actual fun rememberPermissionLauncher(permission: MultiPlatformPermission): Perm
 }
 
 @OptIn(ExperimentalForeignApi::class)
-actual suspend fun readStyles(context: MultiPlatformContext): Categories = withContext(Dispatchers.Default) {
+actual suspend fun readStyles(context: MultiPlatformContext): Categories = withContext(Dispatchers.IO) {
     val path = NSBundle.mainBundle.pathForResource("PromptStyle", "json")
         ?: throw IllegalStateException("PromptStyle.json not found in bundle")
     val jsonString = NSString.stringWithContentsOfFile(path, encoding = NSUTF8StringEncoding, error = null) as String
@@ -232,4 +241,16 @@ suspend fun PHAsset.toByteArray(): ByteArray? = suspendCancellableCoroutine { co
             continuation.resume(null)
         }
     }
+}
+
+@OptIn(ExperimentalForeignApi::class)
+actual fun getScreenSize(): Pair<Double, Double> {
+    val bounds = UIScreen.mainScreen.bounds
+    val width: Double
+    val height: Double
+    bounds.useContents {
+        width = this.size.width
+        height = this.size.height
+    }
+    return width to height
 }

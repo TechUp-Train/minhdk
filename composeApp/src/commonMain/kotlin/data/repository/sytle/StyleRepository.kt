@@ -7,10 +7,10 @@ import data.model.Style
 
 interface StyleRepository {
 
-    suspend fun getStyles(): Response<List<Category>>
+    suspend fun getStyles(): Response<List<Category>?>
 
-    suspend fun getCategoryById(id: String): Response<Category>
+    suspend fun getCategoryById(id: String): Response<Category?>
 
-    suspend fun getStyleById(id: String): Response<Style>
+    suspend fun getStyleById(id: String): Response<Style?>
 
 }

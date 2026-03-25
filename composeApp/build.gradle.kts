@@ -51,7 +51,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
 
             // Koin
-            implementation("io.insert-koin:koin-android")
+//            implementation("io.insert-koin:koin-android")
 
         }
 

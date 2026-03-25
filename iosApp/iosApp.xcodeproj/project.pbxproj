@@ -12,6 +12,7 @@
 
 /* Begin PBXFileReference section */
 		63784E812F723B3C00B27466 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Secrets.plist; path = ../composeApp/src/iosMain/resources/Secrets.plist; sourceTree = "<group>"; };
+		63C185512F73F458008D299B /* Styles.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Styles.json; path = ../composeApp/src/iosMain/resources/Styles.json; sourceTree = "<group>"; };
 		CB3876D97AEE8D86C3FD8C06 /* AiGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AiGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -55,6 +56,7 @@
 		572F9072D1620466F24CA117 = {
 			isa = PBXGroup;
 			children = (
+				63C185512F73F458008D299B /* Styles.json */,
 				63784E812F723B3C00B27466 /* Secrets.plist */,
 				E02DEDC35FC47BB29BAA74B2 /* Configuration */,
 				F86977FD0DD18A023F61735A /* iosApp */,

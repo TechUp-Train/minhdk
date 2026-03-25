@@ -2,6 +2,7 @@ package com.example.aigenerator
 
 import android.Manifest
 import android.content.ContentUris
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -15,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
@@ -30,6 +32,9 @@ import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import kotlin.coroutines.resume
 import androidx.core.net.toUri
+import di.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.KoinApplication
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -49,9 +54,12 @@ actual fun provideNetworkEngine(): HttpClientEngineFactory<*> {
     return OkHttp
 }
 
-actual fun initDependencies() {
+actual fun initDependencies(
+    config: KoinApplication.() -> Unit
+) {
     startKoin {
-        modules(networkModule)
+        config()
+        modules(networkModule, appModule)
     }
 }
 
@@ -93,14 +101,18 @@ actual suspend fun loadLocalImage(context: MultiPlatformContext): List<PlatformI
 actual fun getPlatformType() = PlatformType.ANDROID
 
 @Composable
-actual fun PlatformImage(image: PlatformImage?) {
+actual fun PlatformImage(
+    modifier: Modifier,
+    image: PlatformImage?
+) {
     AsyncImage(
         model = ImageRequest.Builder(LocalPlatformContext.current)
             .data(image)
             .size(200)
             .build(),
         contentDescription = null,
-        modifier = Modifier.size(200.dp)
+        contentScale = ContentScale.Inside,
+        modifier = modifier
     )
 }
 
@@ -161,4 +173,9 @@ actual suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): Byt
     val uri = this.toUri()
     val inputStream = context.contentResolver.openInputStream(uri)
     return inputStream?.readBytes() ?: ByteArray(0)
+}
+
+actual fun getScreenSize(): Pair<Double, Double> {
+    val metrics = Resources.getSystem().displayMetrics
+    return metrics.widthPixels.toDouble() to metrics.heightPixels.toDouble()
 }

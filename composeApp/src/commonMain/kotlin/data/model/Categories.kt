@@ -6,37 +6,37 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Categories(
     @SerialName("categories")
-    val categories: List<Category>
+    val categories: List<Category>? = null
 )
 
 @Serializable
 data class Category(
     @SerialName("category_id")
-    val categoryId: String,
+    val categoryId: String? = null,
 
     @SerialName("category_name")
-    val categoryName: String,
+    val categoryName: String? = null,
 
     @SerialName("category_thumbnail")
-    val categoryThumbnail: String,
+    val categoryThumbnail: String? = null,
 
     @SerialName("styles")
-    val styles: List<Style>
+    val styles: List<Style>? = null
 )
 
 @Serializable
 data class Style(
     @SerialName("style_id")
-    val styleId: String,
+    val styleId: String? = null,
 
     @SerialName("style_name")
-    val styleName: String,
+    val styleName: String? = null,
 
     @SerialName("image_url")
-    val imageUrl: String,
+    val imageUrl: String? = null,
 
     @SerialName("image_prompt")
-    val imagePrompt: String,
+    val imagePrompt: String? = null,
 
     @SerialName("image_limit")
     val imageLimit: Int = 1,
@@ -45,13 +45,13 @@ data class Style(
     val stylePremium: Boolean = false,
 
     @SerialName("style_event")
-    val styleEvent: String,
+    val styleEvent: String? = null,
 
     @SerialName("style_mode")
-    val styleMode: String,
+    val styleMode: String? = null,
 
     @SerialName("style_tag")
-    val styleTag: String,
+    val styleTag: String? = null,
 
     @SerialName("style_status")
     val styleStatus: Boolean = true

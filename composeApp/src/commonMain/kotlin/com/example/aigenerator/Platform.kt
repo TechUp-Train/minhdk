@@ -1,8 +1,10 @@
 package com.example.aigenerator
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import data.model.Categories
 import io.ktor.client.engine.HttpClientEngineFactory
+import org.koin.core.KoinApplication
 
 interface Platform {
     val name: String
@@ -26,7 +28,7 @@ interface PermissionLauncher {
 }
 
 // dependencies
-expect fun initDependencies()
+expect fun initDependencies(config: KoinApplication.() -> Unit)
 
 // Network
 expect fun provideNetworkEngine() : HttpClientEngineFactory<*>
@@ -38,7 +40,10 @@ expect fun getDeviceId(): String
 expect suspend fun loadLocalImage(context: MultiPlatformContext): List<PlatformImage?>
 
 @Composable
-expect fun PlatformImage(image: PlatformImage?)
+expect fun PlatformImage(
+    modifier: Modifier = Modifier,
+    image: PlatformImage?
+)
 
 expect suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): ByteArray?
 
@@ -46,3 +51,5 @@ expect suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): Byt
 expect fun rememberPermissionLauncher(permission: MultiPlatformPermission): PermissionLauncher
 
 expect suspend fun readStyles(context: MultiPlatformContext): Categories
+
+expect fun getScreenSize(): Pair<Double, Double>
