@@ -1,42 +1,120 @@
 package com.example.aigenerator
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.compose.setSingletonImageLoaderFactory
+import coil3.network.ktor3.KtorNetworkFetcherFactory
 import coil3.request.crossfade
 import coil3.util.DebugLogger
-import com.example.aigenerator.utils.readImagePermission
-import data.core.remote.service.base.Response
-import data.core.remote.service.image.ImageService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
-import ui.view.screens.main.MainScreen
+import coil3.disk.DiskCache
+import coil3.memory.MemoryCache
+import okio.FileSystem
+import ui.view.exchanger.AppExchanger
+import ui.view.navigation.Back
+import ui.view.navigation.Graph
+import ui.view.navigation.ImageResult
+import ui.view.navigation.Main
+import ui.view.navigation.PickImage
+import ui.view.screen.main.MainScreen
 import ui.view.themes.AppTheme
+import ui.view.navigation.navigationConfig
+import ui.view.screen.pickimage.PickImageScreen
+import ui.view.themes.AppColors
 
 fun getAsyncImageLoader(context: PlatformContext) =
-    ImageLoader.Builder(context).crossfade(true).logger(DebugLogger()).build()
+    ImageLoader.Builder(context)
+        .components {
+            add(KtorNetworkFetcherFactory())
+        }
+        .memoryCache {
+            MemoryCache.Builder()
+                .maxSizePercent(context, 0.25)
+                .build()
+        }
+        .diskCache {
+            DiskCache.Builder()
+                .directory(FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "image_cache")
+                .maxSizeBytes(1024L * 1024L * 100L) // 100MB
+                .build()
+        }
+        .crossfade(true)
+        .logger(DebugLogger())
+        .build()
+
+private fun handleNavigation(
+    destination: Graph,
+    backStack: NavBackStack<NavKey>
+) {
+    when(destination) {
+        is Main -> backStack.add(Main)
+        is PickImage -> backStack.add(PickImage)
+        is ImageResult -> backStack.add(ImageResult)
+        is Back -> backStack.removeLast()
+    }
+}
 
 @Composable
 fun App(context: MultiPlatformContext) {
+
     setSingletonImageLoaderFactory { context ->
         getAsyncImageLoader(context)
     }
 
+    val backStack = rememberNavBackStack(navigationConfig, Main)
+
     AppTheme {
-        MainScreen()
+        NavDisplay(
+            backStack = backStack,
+            onBack = { backStack.removeLast() },
+            entryProvider = entryProvider {
+                entry<Main> {
+                    MainScreen {
+                        handleNavigation(it, backStack)
+                    }
+                }
+
+                entry<PickImage> {
+                    PickImageScreen(
+                        { selectedImages ->
+                            AppExchanger.exchangePickImageToMainPickImages.trySend(selectedImages)
+                            handleNavigation(Back, backStack)
+                        },
+                        {
+                            handleNavigation(it, backStack)
+                        }
+                    )
+                }
+
+                entry<ImageResult> {
+                    Box(
+                        modifier = Modifier.fillMaxSize().background(color = AppColors.Background)
+                    ) {
+                        Text(
+                            text = "Image Result",
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+                    }
+                }
+
+                entry<Back> {
+                    backStack.removeLast()
+                }
+            }
+        )
     }
 }
 

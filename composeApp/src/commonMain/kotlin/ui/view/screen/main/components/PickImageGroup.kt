@@ -1,8 +1,9 @@
-package ui.view.screens.main.components
+package ui.view.screen.main.components
 
 import aigenerator.composeapp.generated.resources.Res
 import aigenerator.composeapp.generated.resources.ic_pick
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,8 +26,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.aigenerator.PlatformImage
+import com.example.aigenerator.utils.hasPermission
+import com.example.aigenerator.utils.readImagePermission
 import org.jetbrains.compose.resources.painterResource
 import ui.view.custom.ColoredComposable
+import ui.view.screen.main.intents.PickImageIntent
 import ui.view.themes.AppColors
 import ui.view.themes.Space
 
@@ -61,7 +65,8 @@ private fun AddPhoto(
 @Composable
 fun PickImageGroup(
     modifier: Modifier = Modifier,
-    image: PlatformImage?
+    image: PlatformImage?,
+    onIntent: (PickImageIntent) -> Unit
 ) {
 
     Column(
@@ -76,7 +81,6 @@ fun PickImageGroup(
         Spacer(modifier = Modifier.height(Space.x12))
 
         ColoredComposable(
-            background = AppColors.SurfaceLight,
             colors = listOf(AppColors.Primary, Color.Transparent),
             modifier = modifier.fillMaxWidth().aspectRatio(1f)
         ) {
@@ -90,7 +94,15 @@ fun PickImageGroup(
                         modifier = Modifier.fillMaxSize().padding(5.dp)
                     )
                 } ?: run {
-                    AddPhoto()
+                    AddPhoto(
+                        modifier = Modifier.clickable {
+                            if(hasPermission(readImagePermission)) {
+                                onIntent(PickImageIntent.PickImage)
+                            } else {
+                                onIntent(PickImageIntent.AskPermission)
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -102,5 +114,7 @@ fun PickImageGroup(
 private fun PickImageGroupPreview() {
     PickImageGroup(
         image = null
-    )
+    ) {
+
+    }
 }

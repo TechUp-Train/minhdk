@@ -1,4 +1,4 @@
-package ui.view.screens.main.components
+package ui.view.screen.main.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope

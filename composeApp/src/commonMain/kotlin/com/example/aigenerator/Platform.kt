@@ -53,3 +53,5 @@ expect fun rememberPermissionLauncher(permission: MultiPlatformPermission): Perm
 expect suspend fun readStyles(context: MultiPlatformContext): Categories
 
 expect fun getScreenSize(): Pair<Double, Double>
+
+expect fun goToSetting(permission: MultiPlatformPermission)

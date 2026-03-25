@@ -1,13 +1,9 @@
 package ui.view.custom
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,47 +13,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ui.view.themes.AppColors
-import kotlin.math.sin
 
 @Composable
 fun ColoredComposable(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 10.dp,
     strokeWidth: Dp = 2.dp,
-    background: Color,
     colors: List<Color>,
     content: @Composable () -> Unit
 ) {
-
-    val radius = with(LocalDensity.current) {
-        cornerRadius.toPx()
-    }
 
     Box(
         modifier = modifier
     ) {
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxSize()
                 .runnableBackground(
-                    colors, radius
+                    strokeWidth = strokeWidth, cornerRadius = cornerRadius, colors = colors
                 ).padding(strokeWidth)
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-                    .background(
-                        color = background,
-                        shape = RoundedCornerShape(cornerRadius)
-                    )
-            ) {
-                content()
-            }
+            content()
         }
     }
 }

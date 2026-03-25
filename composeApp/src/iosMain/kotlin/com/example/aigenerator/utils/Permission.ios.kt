@@ -16,3 +16,11 @@ actual val readImagePermission = object: MultiPlatformPermission() {
         }
     }
 }
+
+actual fun hasPermission(permission: MultiPlatformPermission): Boolean {
+    if (permission !== readImagePermission) return false
+
+    val status = PHPhotoLibrary.authorizationStatus()
+    return status == PHAuthorizationStatusAuthorized ||
+            status == PHAuthorizationStatusLimited
+}

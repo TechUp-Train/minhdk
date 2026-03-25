@@ -1,6 +1,5 @@
-package data.repository.sytle
+package data.repo.style
 
-import aigenerator.composeapp.generated.resources.Res
 import data.core.remote.service.base.Response
 import data.model.Category
 import data.model.Style

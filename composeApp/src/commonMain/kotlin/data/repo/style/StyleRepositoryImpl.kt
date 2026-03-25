@@ -1,4 +1,4 @@
-package data.repository.sytle
+package data.repo.style
 
 import data.core.remote.service.base.Response
 import data.model.Category

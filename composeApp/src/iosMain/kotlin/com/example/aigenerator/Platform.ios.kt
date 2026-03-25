@@ -63,6 +63,9 @@ import platform.UIKit.UIImageView
 import platform.UIKit.UIScreen
 import platform.UIKit.UIViewContentMode
 import platform.darwin.unw_proc_info_t
+import platform.UIKit.UIApplicationOpenSettingsURLString
+import platform.UIKit.UIApplication
+import platform.Foundation.NSURL
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -253,4 +256,11 @@ actual fun getScreenSize(): Pair<Double, Double> {
         height = this.size.height
     }
     return width to height
+}
+
+actual fun goToSetting(permission: MultiPlatformPermission) {
+    val url = NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+    if (url != null) {
+        UIApplication.sharedApplication.openURL(url)
+    }
 }

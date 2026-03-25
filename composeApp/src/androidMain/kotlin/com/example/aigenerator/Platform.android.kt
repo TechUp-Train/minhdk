@@ -33,8 +33,12 @@ import org.koin.core.context.startKoin
 import kotlin.coroutines.resume
 import androidx.core.net.toUri
 import di.appModule
-import org.koin.android.ext.koin.androidContext
 import org.koin.core.KoinApplication
+import org.koin.core.context.GlobalContext
+import android.content.Intent
+import android.content.Context
+import coil3.request.crossfade
+import coil3.request.placeholder
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -108,10 +112,12 @@ actual fun PlatformImage(
     AsyncImage(
         model = ImageRequest.Builder(LocalPlatformContext.current)
             .data(image)
-            .size(200)
+            .size(300)
+            .crossfade(true)
+            .placeholder(R.drawable.img_placeholder)
             .build(),
         contentDescription = null,
-        contentScale = ContentScale.Inside,
+        contentScale = ContentScale.Crop,
         modifier = modifier
     )
 }
@@ -142,12 +148,19 @@ private fun createPermissionLauncher(permission: MultiPlatformPermission): Permi
         override var onResult: ((Boolean) -> Unit)? = null
 
         override suspend fun request(): Boolean = suspendCancellableCoroutine { cont ->
+            var resumed = false
             onResult = { granted ->
-                cont.resume(granted)
+                if (!resumed) {
+                    resumed = true
+                    cont.resume(granted)
+                }
             }
             triggerRequest?.invoke(permission)
-        }
 
+            cont.invokeOnCancellation {
+                onResult = null
+            }
+        }
     }
 }
 
@@ -178,4 +191,13 @@ actual suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): Byt
 actual fun getScreenSize(): Pair<Double, Double> {
     val metrics = Resources.getSystem().displayMetrics
     return metrics.widthPixels.toDouble() to metrics.heightPixels.toDouble()
+}
+
+actual fun goToSetting(permission: MultiPlatformPermission) {
+    val context = GlobalContext.get().get<Context>()
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+        data = android.net.Uri.fromParts("package", context.packageName, null)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(intent)
 }
