@@ -83,7 +83,8 @@ fun PickImageScreen(
                 ImageGridItem(
                     image = image,
                     isSelected = isSelected,
-                    onClick = { 
+                    onClick = {
+                        println("Clicked on image: ${selectedImages.size}")
                         if (isSelected) {
                             selectedImages.remove(image)
                         } else {
@@ -183,7 +184,9 @@ fun ImageGridItem(
             .fillMaxWidth()
             .aspectRatio(1f)
             .clip(AppShapes.large)
-            .clickable { onClick() }
+            .clickable {
+                onClick()
+            }
             .then(
                 if (isSelected) {
                     Modifier.border(2.dp, AppColors.PrimaryLight, AppShapes.large)

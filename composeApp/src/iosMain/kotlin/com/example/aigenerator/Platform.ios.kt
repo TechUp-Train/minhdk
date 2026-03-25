@@ -261,6 +261,6 @@ actual fun getScreenSize(): Pair<Double, Double> {
 actual fun goToSetting(permission: MultiPlatformPermission) {
     val url = NSURL.URLWithString(UIApplicationOpenSettingsURLString)
     if (url != null) {
-        UIApplication.sharedApplication.openURL(url)
+        UIApplication.sharedApplication.openURL(url, options = emptyMap<Any?, Any>(), completionHandler = null)
     }
 }
