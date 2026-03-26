@@ -38,7 +38,7 @@ import ui.view.screen.main.intents.PermissionDialogIntent
 import ui.view.themes.AppColors
 import ui.view.themes.AppShapes
 
-@Preview
+
 @Composable
 fun PermissionDialog(
     onIntent: (PermissionDialogIntent) -> Unit

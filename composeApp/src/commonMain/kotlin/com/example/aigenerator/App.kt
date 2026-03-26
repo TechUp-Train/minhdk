@@ -2,11 +2,14 @@ package com.example.aigenerator
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -32,7 +35,7 @@ import ui.view.screen.main.MainScreen
 import ui.view.themes.AppTheme
 import ui.view.navigation.navigationConfig
 import ui.view.screen.pickimage.PickImageScreen
-import ui.view.themes.AppColors
+import ui.view.screen.result.ImageResultScreen
 
 fun getAsyncImageLoader(context: PlatformContext) =
     ImageLoader.Builder(context)
@@ -61,8 +64,8 @@ private fun handleNavigation(
     when(destination) {
         is Main -> backStack.add(Main)
         is PickImage -> backStack.add(PickImage)
-        is ImageResult -> backStack.add(ImageResult)
-        is Back -> backStack.removeLast()
+        is ImageResult -> backStack.add(ImageResult(destination.response))
+        is Back -> backStack.removeLastOrNull()
     }
 }
 
@@ -76,116 +79,50 @@ fun App(context: MultiPlatformContext) {
     val backStack = rememberNavBackStack(navigationConfig, Main)
 
     AppTheme {
-        NavDisplay(
-            backStack = backStack,
-            onBack = { backStack.removeLast() },
-            entryProvider = entryProvider {
-                entry<Main> {
-                    MainScreen {
-                        handleNavigation(it, backStack)
-                    }
-                }
-
-                entry<PickImage> {
-                    PickImageScreen(
-                        { selectedImages ->
-                            AppExchanger.exchangePickImageToMainPickImages.trySend(selectedImages)
-                            handleNavigation(Back, backStack)
-                        },
-                        {
+        Scaffold { paddingValues ->
+            NavDisplay(
+                backStack = backStack,
+                onBack = { backStack.removeLast() },
+                entryProvider = entryProvider {
+                    entry<Main> {
+                        MainScreen(paddingValues) {
                             handleNavigation(it, backStack)
                         }
-                    )
-                }
+                    }
 
-                entry<ImageResult> {
-                    Box(
-                        modifier = Modifier.fillMaxSize().background(color = AppColors.Background)
-                    ) {
-                        Text(
-                            text = "Image Result",
-                            fontSize = 20.sp,
-                            color = Color.White
+                    entry<PickImage> {
+                        PickImageScreen(
+                            paddingValues,
+                            { selectedImages ->
+                                AppExchanger.exchangePickImageToMainPickImages.trySend(selectedImages)
+                                handleNavigation(Back, backStack)
+                            },
+                            {
+                                handleNavigation(it, backStack)
+                            }
                         )
                     }
-                }
 
-                entry<Back> {
-                    backStack.removeLast()
+                    entry<ImageResult> {
+
+                        val input = backStack.lastOrNull() as? ImageResult
+
+                        input?.let {
+                            ImageResultScreen(
+                                result = input.response,
+                                padding = paddingValues
+                            ) {
+                                handleNavigation(it, backStack = backStack)
+                            }
+                            return@entry
+                        }
+                    }
+
+                    entry<Back> {
+                        backStack.removeLast()
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }
-
-//@Composable
-//fun App(context: MultiPlatformContext) {
-//
-//    val imageService = koinInject<ImageService>()
-//
-//    setSingletonImageLoaderFactory { context ->
-//        getAsyncImageLoader(context)
-//    }
-//
-//    val launcher = rememberPermissionLauncher(readImagePermission)
-//    var image = remember { mutableStateListOf<PlatformImage?>() }
-//
-//    val scope = rememberCoroutineScope()
-//
-//    LaunchedEffect(Unit) {
-//
-////        when(val res = imageService.getPresignLink()) {
-////            is Response.Success -> println("Success: ${res.data.data?.url}")
-////            is Response.Error -> println("Error: ${res.message}")
-////        }
-//
-//        val granted = launcher.request()
-//        if (granted) {
-//            val urls = loadLocalImage(context)
-//            image.addAll(urls.subList(0, 2))
-//            println("Total: ${urls.size}")
-//        }
-//    }
-//
-//    MaterialTheme {
-//
-//        Column(
-//            verticalArrangement = Arrangement.spacedBy(20.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            modifier = Modifier.fillMaxSize().padding(20.dp)
-//        ) {
-////            image?.let {
-////                PlatformImage(it)
-////            }
-//
-//            //{"statusCode":200,"message":"success","data":{"url":"https://static.aperogroup.ai/ai-core-qwen-editing/20260324/2767fbd4-ba63-4948-827e-ff7e4bf4354a/output/10843d82-dffa-4618-8ff1-52e996ef93c3/output/1774345835163_0.jpeg","path":"ai-core-qwen-editing/20260324/2767fbd4-ba63-4948-827e-ff7e4bf4354a/output/10843d82-dffa-4618-8ff1-52e996ef93c3/output/1774345835163_0.jpeg"},"timestamp":1774345836680}
-//            Button(
-//                onClick = {
-//                    scope.launch(Dispatchers.IO) {
-//                        (image.map { it?.toByteArray(context) } as? List<ByteArray>)?.let {
-//                            val res = imageService.sendPrompt(
-//                                it,
-//                                "COMBINE_IMAGES",
-//                                "Combine them then send me a funny image."
-//                            )
-//                            when (res) {
-//                                is Response.Success -> println("success: ${res.data.data?.url}")
-//                                else -> println("error")
-//                            }
-//                        }
-////                        image?.toByteArray(context)?.let {
-////                            val res = imageService.sendPrompt(listOf(it), "IMAGE_EDITING", "Change this image with blue theme.")
-////                            when(res) {
-////                                is Response.Success -> println("success")
-////                                else -> println("error")
-////                            }
-////                        }
-//                    }
-//                }
-//            ) {
-//                Text("Upload")
-//            }
-//        }
-//
-//    }
-//}

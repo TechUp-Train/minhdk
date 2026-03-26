@@ -1,6 +1,7 @@
 import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.util.Properties
 
 plugins {
@@ -100,6 +101,9 @@ kotlin {
 
             // life cycle
             implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
+
+            // network
+            implementation("dev.tmapps:konnection:1.4.5")
         }
 
         iosMain.dependencies {

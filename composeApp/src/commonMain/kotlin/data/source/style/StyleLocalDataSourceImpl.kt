@@ -2,7 +2,6 @@ package data.source.style
 
 import aigenerator.composeapp.generated.resources.Res
 import com.example.aigenerator.MultiPlatformContext
-import com.example.aigenerator.readStyles
 import data.model.Categories
 import data.model.Category
 import data.model.Style

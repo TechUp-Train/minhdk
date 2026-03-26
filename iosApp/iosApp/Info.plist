@@ -7,10 +7,10 @@
 	<true/>
 
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>Ứng dụng cần quyền truy cập thư viện ảnh để hiển thị hình ảnh.</string>
+    <string>App needs permission to access images to your Photos</string>
 
     <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Ứng dụng cần quyền để lưu ảnh vào thư viện.</string>
+    <string>App needs permission to save images to your Photos.</string>
 
 </dict>
 </plist>

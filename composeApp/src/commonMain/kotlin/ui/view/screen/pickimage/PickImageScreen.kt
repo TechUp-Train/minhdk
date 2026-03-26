@@ -2,6 +2,8 @@ package ui.view.screen.pickimage
 
 import aigenerator.composeapp.generated.resources.Res
 import aigenerator.composeapp.generated.resources.ic_back
+import aigenerator.composeapp.generated.resources.ic_checked
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -46,13 +48,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import kotlinx.datetime.format.Padding
 import org.jetbrains.compose.resources.painterResource
+import ui.view.custom.ColoredComposable
 import ui.view.navigation.Back
 import ui.view.navigation.Graph
 import ui.viewmodel.main.PickImageViewModel
 
 @Composable
 fun PickImageScreen(
+    padding: PaddingValues,
     onConfirm: (List<PlatformImage>) -> Unit,
     onNavigate: (Graph) -> Unit
 ) {
@@ -64,6 +71,7 @@ fun PickImageScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColors.Background)
+            .padding(padding)
     ) {
         PickImageTopBar(
             selectedCount = selectedImages.size,
@@ -72,7 +80,7 @@ fun PickImageScreen(
         )
         
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Fixed(3),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -84,7 +92,7 @@ fun PickImageScreen(
                     image = image,
                     isSelected = isSelected,
                     onClick = {
-                        println("Clicked on image: ${selectedImages.size}")
+                        println("Clickkkk")
                         if (isSelected) {
                             selectedImages.remove(image)
                         } else {
@@ -179,78 +187,56 @@ fun ImageGridItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    Box(
+    ColoredComposable(
+        enabled = isSelected,
+        colors = listOf(
+            AppColors.Primary,
+            Color.Transparent
+        ),
+        cornerRadius = 12.dp,
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .clip(AppShapes.large)
-            .clickable {
-                onClick()
-            }
-            .then(
-                if (isSelected) {
-                    Modifier.border(2.dp, AppColors.PrimaryLight, AppShapes.large)
-                } else {
-                    Modifier
-                }
-            )
     ) {
 
         PlatformImage(
             image = image,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().clip(AppShapes.medium)
         )
 
-        if (!isSelected) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.2f))
-            )
-        }
-
         Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(8.dp)
+            Modifier
                 .size(24.dp)
-                .clip(CircleShape)
-                .background(if (isSelected) AppColors.PrimaryLight else Color(0x66000000)),
-            contentAlignment = Alignment.Center
+                .align(Alignment.TopEnd)
+                .padding(top = 4.dp, end = 4.dp)
         ) {
-            if (isSelected) {
+            if(isSelected) {
+                Image(
+                    painter = painterResource(Res.drawable.ic_checked),
+                    contentDescription = "Selected",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
                 Box(
                     modifier = Modifier
-                        .size(22.dp)
+                        .fillMaxSize()
                         .clip(CircleShape)
-                        .background(Color.White),
+                        .background(AppColors.Background.copy(alpha = 0.3f)),
                     contentAlignment = Alignment.Center
-                ) {
-                    val checkIcon = ImageVector.Builder(
-                        name = "Check",
-                        defaultWidth = 24.dp,
-                        defaultHeight = 24.dp,
-                        viewportWidth = 24f,
-                        viewportHeight = 24f
-                    ).path(
-                        stroke = SolidColor(AppColors.PrimaryLight),
-                        strokeLineWidth = 2.5f,
-                        strokeLineCap = StrokeCap.Round,
-                        strokeLineJoin = StrokeJoin.Round
-                    ) {
-                        moveTo(6f, 12f)
-                        lineTo(10f, 16f)
-                        lineTo(18f, 8f)
-                    }.build()
-
-                    Icon(
-                        imageVector = checkIcon,
-                        contentDescription = "Selected",
-                        tint = AppColors.PrimaryLight,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
+                ) {}
             }
         }
+
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxSize(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = Color.Transparent
+            ),
+            contentPadding = PaddingValues(0.dp),
+            shape = RectangleShape
+        ) {}
     }
 }

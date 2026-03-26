@@ -26,3 +26,9 @@ actual fun hasPermission(permission: MultiPlatformPermission): Boolean {
         ContextCompat.checkSelfPermission(context, perm) == PackageManager.PERMISSION_GRANTED
     }
 }
+
+actual val writeImagePermission = object: MultiPlatformPermission() {
+    override val permission: List<String> = if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) listOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    ) else emptyList()
+}

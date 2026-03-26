@@ -1,6 +1,5 @@
 package com.example.aigenerator
 
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -8,19 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.UIKitView
-import coil3.PlatformContext
 import data.model.Categories
 import di.appModule
 import di.networkModule
 import io.github.vinceglb.filekit.utils.toByteArray
+import io.github.vinceglb.filekit.utils.toNSData
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.memScoped
-import kotlinx.cinterop.refTo
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -32,42 +28,34 @@ import org.koin.core.context.startKoin
 import platform.CoreGraphics.CGSize
 import platform.CoreGraphics.CGSizeMake
 import platform.Foundation.NSBundle
-import platform.Foundation.NSData
 import platform.Foundation.NSDictionary
-import platform.Foundation.NSMutableData
 import platform.Foundation.NSSortDescriptor
 import platform.Foundation.NSString
 import platform.Foundation.NSUTF8StringEncoding
-import platform.Foundation.appendData
 import platform.Foundation.dictionaryWithContentsOfFile
-import platform.Foundation.getBytes
 import platform.Foundation.stringWithContentsOfFile
 import platform.Photos.PHAsset
 import platform.Photos.PHAssetMediaTypeImage
-import platform.Photos.PHAssetResource
-import platform.Photos.PHAssetResourceManager
-import platform.Photos.PHAuthorizationStatusAuthorized
-import platform.Photos.PHAuthorizationStatusLimited
 import platform.Photos.PHFetchOptions
 import platform.Photos.PHFetchResult
 import platform.Photos.PHImageContentModeAspectFill
 import platform.Photos.PHImageManager
 import platform.Photos.PHImageRequestOptions
-import platform.Photos.PHImageRequestOptionsDeliveryMode
 import platform.Photos.PHImageRequestOptionsDeliveryModeHighQualityFormat
 import platform.Photos.PHImageRequestOptionsResizeModeFast
-import platform.Photos.PHPhotoLibrary
 import platform.UIKit.UIDevice
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageView
 import platform.UIKit.UIScreen
 import platform.UIKit.UIViewContentMode
-import platform.darwin.unw_proc_info_t
 import platform.UIKit.UIApplicationOpenSettingsURLString
 import platform.UIKit.UIApplication
 import platform.Foundation.NSURL
+import platform.Photos.PHAssetCreationRequest
+import platform.Photos.PHAssetResourceTypePhoto
+import platform.Photos.PHPhotoLibrary
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+
 
 class IOSPlatform : Platform {
     override val name: String =
@@ -197,14 +185,6 @@ actual fun rememberPermissionLauncher(permission: MultiPlatformPermission): Perm
     }.value
 }
 
-@OptIn(ExperimentalForeignApi::class)
-actual suspend fun readStyles(context: MultiPlatformContext): Categories = withContext(Dispatchers.IO) {
-    val path = NSBundle.mainBundle.pathForResource("PromptStyle", "json")
-        ?: throw IllegalStateException("PromptStyle.json not found in bundle")
-    val jsonString = NSString.stringWithContentsOfFile(path, encoding = NSUTF8StringEncoding, error = null) as String
-    Json.decodeFromString<Categories>(jsonString)
-}
-
 actual fun getSecretKeys(): List<String> {
     val path = NSBundle.mainBundle.pathForResource(
         name = "Secrets", ofType = "plist"
@@ -215,10 +195,6 @@ actual fun getSecretKeys(): List<String> {
     val apiKey = dict["API_KEY"] as? String ?: ""
     val publicKey = dict["PUBLIC_KEY"] as? String ?: ""
     return listOf(apiKey, publicKey)
-}
-
-actual fun getDeviceId(): String {
-    return ""
 }
 
 @OptIn(ExperimentalForeignApi::class)
@@ -246,21 +222,35 @@ suspend fun PHAsset.toByteArray(): ByteArray? = suspendCancellableCoroutine { co
     }
 }
 
-@OptIn(ExperimentalForeignApi::class)
-actual fun getScreenSize(): Pair<Double, Double> {
-    val bounds = UIScreen.mainScreen.bounds
-    val width: Double
-    val height: Double
-    bounds.useContents {
-        width = this.size.width
-        height = this.size.height
-    }
-    return width to height
-}
-
 actual fun goToSetting(permission: MultiPlatformPermission) {
     val url = NSURL.URLWithString(UIApplicationOpenSettingsURLString)
     if (url != null) {
         UIApplication.sharedApplication.openURL(url, options = emptyMap<Any?, Any>(), completionHandler = null)
     }
+}
+
+
+actual suspend fun saveToPublicGallery(
+    context: MultiPlatformContext,
+    filename: String,
+    bytes: ByteArray
+) {
+    val data = bytes.toNSData()
+
+    PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+        val request = PHAssetCreationRequest.creationRequestForAsset()
+        request.addResourceWithType(
+            type = PHAssetResourceTypePhoto,
+            data = data,
+            options = null
+        )
+    }, completionHandler = { success, error ->
+        if (!success) {
+            println("Error saving to Photos: $error")
+        }
+    })
+}
+
+actual fun checkShouldAskWriteImagePermission(): Boolean {
+    return true
 }

@@ -10,6 +10,9 @@ import data.model.PromptRequest
 import data.model.PromptResponse
 import data.model.Timestamp
 import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.statement.readBytes
+import io.ktor.client.statement.readRawBytes
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -19,7 +22,7 @@ import kotlin.coroutines.resume
 import kotlin.time.Clock
 
 class ImageServiceImpl(
-    client: HttpClient,
+    private val client: HttpClient,
     baseHost: String
 ) : BaseServiceImpl(client, baseHost), ImageService {
 
@@ -177,6 +180,17 @@ class ImageServiceImpl(
                     ContentType.Application.Json
                 )
             }
+        }
+    }
+
+    override suspend fun downloadImage(url: String): ByteArray? {
+        return try {
+            val response = client.get(url)
+            client.close()
+            response.readRawBytes()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 

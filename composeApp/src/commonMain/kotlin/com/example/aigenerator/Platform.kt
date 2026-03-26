@@ -3,6 +3,7 @@ package com.example.aigenerator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import data.model.Categories
+import dev.tmapps.konnection.Konnection
 import io.ktor.client.engine.HttpClientEngineFactory
 import org.koin.core.KoinApplication
 
@@ -35,8 +36,6 @@ expect fun provideNetworkEngine() : HttpClientEngineFactory<*>
 
 expect fun getSecretKeys(): List<String>
 
-expect fun getDeviceId(): String
-
 expect suspend fun loadLocalImage(context: MultiPlatformContext): List<PlatformImage?>
 
 @Composable
@@ -50,8 +49,12 @@ expect suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): Byt
 @Composable
 expect fun rememberPermissionLauncher(permission: MultiPlatformPermission): PermissionLauncher
 
-expect suspend fun readStyles(context: MultiPlatformContext): Categories
-
-expect fun getScreenSize(): Pair<Double, Double>
-
 expect fun goToSetting(permission: MultiPlatformPermission)
+
+fun isNetworkAvailable(): Boolean {
+    return Konnection.instance.isConnected()
+}
+
+expect fun checkShouldAskWriteImagePermission(): Boolean
+
+expect suspend fun saveToPublicGallery(context: MultiPlatformContext, filename: String, bytes: ByteArray)

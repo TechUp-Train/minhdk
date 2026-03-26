@@ -1,20 +1,27 @@
 package ui.view.screen.main.components
 
 import aigenerator.composeapp.generated.resources.Res
+import aigenerator.composeapp.generated.resources.ic_change
 import aigenerator.composeapp.generated.resources.ic_pick
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.Image
 import com.example.aigenerator.PlatformImage
 import com.example.aigenerator.utils.hasPermission
 import com.example.aigenerator.utils.readImagePermission
@@ -32,6 +40,7 @@ import org.jetbrains.compose.resources.painterResource
 import ui.view.custom.ColoredComposable
 import ui.view.screen.main.intents.PickImageIntent
 import ui.view.themes.AppColors
+import ui.view.themes.AppShapes
 import ui.view.themes.Space
 
 @Preview
@@ -96,7 +105,7 @@ fun PickImageGroup(
                 } ?: run {
                     AddPhoto(
                         modifier = Modifier.clickable {
-                            if(hasPermission(readImagePermission)) {
+                            if (hasPermission(readImagePermission)) {
                                 onIntent(PickImageIntent.PickImage)
                             } else {
                                 onIntent(PickImageIntent.AskPermission)
@@ -104,6 +113,65 @@ fun PickImageGroup(
                         }
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun SelectedImage(
+    modifier: Modifier = Modifier,
+    image: PlatformImage,
+    onClickChange: () -> Unit
+) {
+
+    Box(
+        modifier = modifier
+    ) {
+        PlatformImage(
+            image = image,
+            modifier = Modifier.fillMaxSize().clip(AppShapes.medium)
+        )
+
+        Box(
+            modifier = Modifier.size(50.dp)
+                .padding(top = 10.dp, end = 10.dp)
+                .clip(CircleShape)
+                .background(color = AppColors.PrimaryLight.copy(alpha = 0.3f))
+                .align(Alignment.TopEnd)
+        ) {
+            IconButton(
+                onClick = onClickChange,
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_change),
+                    contentDescription = null,
+                    tint = AppColors.Primary,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+
+
+}
+
+@Composable
+fun SelectedImages(
+    modifier: Modifier = Modifier,
+    images: List<PlatformImage>,
+    onClickChange: () -> Unit
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier
+    ) {
+        images.forEach { image ->
+            SelectedImage(
+                image = image,
+                modifier = Modifier.weight(1f).fillMaxHeight()
+            ) {
+                onClickChange()
             }
         }
     }

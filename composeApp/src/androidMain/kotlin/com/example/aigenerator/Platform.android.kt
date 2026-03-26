@@ -2,6 +2,7 @@ package com.example.aigenerator
 
 import android.Manifest
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
@@ -37,8 +38,15 @@ import org.koin.core.KoinApplication
 import org.koin.core.context.GlobalContext
 import android.content.Intent
 import android.content.Context
+import android.media.MediaScannerConnection
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Environment
+import android.util.Log
 import coil3.request.crossfade
 import coil3.request.placeholder
+import java.io.File
+import java.io.FileOutputStream
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -164,13 +172,6 @@ private fun createPermissionLauncher(permission: MultiPlatformPermission): Permi
     }
 }
 
-actual suspend fun readStyles(context: MultiPlatformContext): Categories = withContext(Dispatchers.IO) {
-    val jsonString = context.assets.open("Styles.json")
-        .bufferedReader()
-        .use { it.readText() }
-    Json.decodeFromString<Categories>(jsonString)
-}
-
 actual fun getSecretKeys(): List<String> {
     return listOf(
         BuildConfig.API_KEY,
@@ -178,19 +179,10 @@ actual fun getSecretKeys(): List<String> {
     )
 }
 
-actual fun getDeviceId(): String {
-    return ""
-}
-
 actual suspend fun PlatformImage.toByteArray(context: MultiPlatformContext): ByteArray? {
     val uri = this.toUri()
     val inputStream = context.contentResolver.openInputStream(uri)
     return inputStream?.readBytes() ?: ByteArray(0)
-}
-
-actual fun getScreenSize(): Pair<Double, Double> {
-    val metrics = Resources.getSystem().displayMetrics
-    return metrics.widthPixels.toDouble() to metrics.heightPixels.toDouble()
 }
 
 actual fun goToSetting(permission: MultiPlatformPermission) {
@@ -200,4 +192,51 @@ actual fun goToSetting(permission: MultiPlatformPermission) {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
     context.startActivity(intent)
+}
+
+actual fun checkShouldAskWriteImagePermission(): Boolean {
+    return Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+}
+
+actual suspend fun saveToPublicGallery(context: MultiPlatformContext, filename: String, bytes: ByteArray) {
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val values = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, "${filename}.jpeg")
+            put(MediaStore.Downloads.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Downloads.RELATIVE_PATH, "Download/MyApp")
+        }
+
+        val uri = context.contentResolver.insert(
+            MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+            values
+        ) ?: throw Exception("Failed to create file")
+
+        context.contentResolver.openOutputStream(uri)?.use {
+            it.write(bytes)
+        } ?: throw Exception("Failed to open stream")
+
+        Log.d("fwejfj", "download image: susssceeee")
+
+    } else {
+        val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val folder = File(downloads, "MyApp")
+
+        if (!folder.exists()) folder.mkdirs()
+
+        val file = File(folder, "${filename}.jpeg")
+
+        withContext(Dispatchers.IO) {
+            FileOutputStream(file).use {
+                it.write(bytes)
+            }
+        }
+
+        MediaScannerConnection.scanFile(
+            context,
+            arrayOf(file.absolutePath),
+            arrayOf("image/jpeg"),
+            null
+        )
+    }
 }

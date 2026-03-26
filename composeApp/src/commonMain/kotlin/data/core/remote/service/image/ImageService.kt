@@ -13,4 +13,6 @@ interface ImageService {
         prompt: String
     ): Response<PromptResponse>
 
+    suspend fun downloadImage(url: String): ByteArray?
+
 }
