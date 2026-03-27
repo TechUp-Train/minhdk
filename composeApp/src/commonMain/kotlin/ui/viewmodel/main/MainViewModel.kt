@@ -96,6 +96,7 @@ class MainViewModel(
 
             is GenerateImageIntent.Generation -> {
                 _loadingState.value = true
+                println("BenjaminLogging: ${intent.prompt} -- ${intent.images} -- ${intent.style}")
                 generateImage(intent.prompt, intent.images, intent.style)
             }
         }
@@ -109,11 +110,7 @@ class MainViewModel(
                     _generationState.trySend(res.data)
                 }
                 is Response.Error -> {
-//                    _errorState.value = "Some error happen !"
-//                    viewModelScope.launch {
-//                        delay(1500L)
-//                        _errorState.value = null
-//                    }
+                    _loadingState.value = false
                     notifyError("Some error happen !")
                 }
             }

@@ -108,6 +108,7 @@ open class BaseServiceImpl(
                     config(builder)
                 })
             } catch (e: Exception) {
+                println("BenjaminLogging: ${e.toString()}")
                 Response.Error(
                     code = null,
                     message = e.message

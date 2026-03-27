@@ -1,13 +1,11 @@
 package data.repo.image
 
-import aigenerator.composeapp.generated.resources.Res
 import com.example.aigenerator.MultiPlatformContext
 import com.example.aigenerator.PlatformImage
 import com.example.aigenerator.saveToPublicGallery
 import data.core.remote.service.base.Response
 import data.core.remote.service.image.ImageService
 import data.source.image.LocalImageDataSource
-import kotlin.js.ExperimentalJsExport
 import kotlin.time.Clock
 
 class ImageRepositoryImpl(

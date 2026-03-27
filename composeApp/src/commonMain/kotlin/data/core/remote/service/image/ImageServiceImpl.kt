@@ -15,7 +15,13 @@ import io.ktor.client.statement.readBytes
 import io.ktor.client.statement.readRawBytes
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.resume
@@ -41,7 +47,7 @@ class ImageServiceImpl(
 
     private suspend fun generateSignature(
         timeStamp: Long
-    ): Response<List<String>> = suspendCancellableCoroutine { cont ->
+    ): Response<List<String>>  {
         var apiKey = ""
         var publicKey = ""
         getSecretKeys().let {
@@ -54,18 +60,16 @@ class ImageServiceImpl(
             timestamp = timeStamp
         )
 
-        result.onSuccess { data ->
-            cont.resume(
+        if(result.isSuccess) {
+            return result.getOrNull()?.let { data ->
                 Response.Success(
                     listOf(
                         data.timestamp.toString(), data.signature
                     )
                 )
-            )
-        }
-
-        result.onFailure { error ->
-            cont.resume(Response.Error(null, error.message))
+            } ?: Response.Error(null, "Timestamp null")
+        } else {
+            return Response.Error(null, result.exceptionOrNull()?.message)
         }
     }
 
@@ -154,18 +158,22 @@ class ImageServiceImpl(
         mode: String,
         prompt: String
     ): Response<PromptResponse> {
+        println("BenjaminLogging: Push images to cloud")
         val files = mutableListOf<String>()
         images.forEach { image ->
             val placeHolder = when (val res = uploadImageToCloud(image)) {
                 is Response.Success -> res.data
-                else -> return Response.Error(
-                    null,
-                    "Can not send prompt due to missing placeholder"
-                )
+                else -> {
+                    return Response.Error(
+                        null,
+                        "Can not send prompt due to missing placeholder"
+                    )
+                }
             }
             files.add(placeHolder)
         }
         val prompt = PromptRequest(files, mode, prompt)
+        println("BenjaminLogging: Start gen: ${prompt}")
         return requestWithKeys { timestamp, signature ->
             request(Method.POST, PromptResponse.serializer()) {
                 path("/api/v5.1/qwen-editing")
@@ -183,10 +191,9 @@ class ImageServiceImpl(
         }
     }
 
-    override suspend fun downloadImage(url: String): ByteArray? {
-        return try {
+    override suspend fun downloadImage(url: String): ByteArray? = withContext(Dispatchers.IO) {
+        return@withContext try {
             val response = client.get(url)
-            client.close()
             response.readRawBytes()
         } catch (e: Exception) {
             e.printStackTrace()

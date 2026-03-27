@@ -16,6 +16,7 @@ class GenerationRemoteDataSourceImpl(
     override suspend fun generate(prompt: String, images: List<PlatformImage>, style: Style): Response<PromptResponse> {
         val rawImages = (images.map { it.toByteArray(context) } as? List<ByteArray>)
         return rawImages?.let { raw ->
+            println("BenjaminLogging: Start send prompt")
             imageService.sendPrompt(
                 raw,
                 style.styleMode ?: "",
