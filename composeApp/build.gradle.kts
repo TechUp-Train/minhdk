@@ -132,7 +132,7 @@ android {
         versionName = "1.0"
 
         // build api key
-        val localProps = rootProject.file("local.properties")
+        val localProps = rootProject.file("gradle.properties")
         val props = Properties()
         if (localProps.exists()) {
             props.load(localProps.inputStream())
